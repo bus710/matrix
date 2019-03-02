@@ -1,4 +1,4 @@
-module matrix-server
+module matrix
 
 go 1.12
 

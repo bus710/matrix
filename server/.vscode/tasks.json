@@ -6,7 +6,7 @@
 	"tasks": [
 		{
 			"label": "Build and Run",
-			"command": "go build && ./matrix-server",
+			"command": "go build && ./matrix",
 			"group": {
 				"kind": "build",
 				"isDefault": true
