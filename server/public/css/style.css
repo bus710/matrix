@@ -1,0 +1,59 @@
+* {
+    font-family: "Segoe UI", Ubuntu; /* https://css-tricks.com/snippets/css/system-font-stack/ */
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    padding: 0; 
+    margin: 0; 
+    display: flex;
+    /* h-align */
+    justify-content: left;
+    /* v-align */
+    align-items: flex-start;
+    background: #eeeeee; 
+    overflow: hidden;
+    overflow-x:hidden; 
+    overflow-y: hidden;
+    position:fixed;
+}
+
+select {
+    background-color: white;
+    color: black;
+    outline: none !important;
+    border-color: black;
+    border-radius: 3px;
+    height: 28px;
+    width: 470px;
+    font-size: 16px;
+    box-shadow: black;
+}
+
+button {
+        background-color: white;
+        color: black;
+        outline: black;
+        border-color: black;
+        border-width: 1px;
+        border-radius: 3px;
+        /* height: 30px; */
+        /* width: 100px; */
+        font-size: 20px;
+}
+
+button:not(:hover) {
+    background-color: #ffffff;
+}
+
+button:hover {
+    background-color: #cccccc;
+}
+
+button:active {
+    background-color: #aaaaaa;
+}
