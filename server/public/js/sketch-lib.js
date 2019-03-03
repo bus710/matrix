@@ -351,10 +351,10 @@ class Matrix {
 
                 let circlePosition = this.m[i][j].circle.getPosition();
 
-                if ((circlePosition[0] > x - 10) &&
-                    (circlePosition[0] < x + 10) &&
-                    (circlePosition[1] > y - 10) &&
-                    (circlePosition[1] < y + 10)) {
+                if ((circlePosition[0] > x - 15) &&
+                    (circlePosition[0] < x + 15) &&
+                    (circlePosition[1] > y - 15) &&
+                    (circlePosition[1] < y + 15)) {
                     if (this.m[i][j].circle.getSelected()) {
                         this.m[i][j].circle.clearSelected();
                     } else {
