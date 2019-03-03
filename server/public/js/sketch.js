@@ -5,7 +5,7 @@
 const serverIP = location.hostname
 const socket = new WebSocket("ws://" + serverIP + ":8080/message");
 
-let appTitle;
+let yMatrix;
 
 let yType;
 let btnAll;
@@ -30,6 +30,8 @@ let btnApply;
 
 let drawCnt = 0;
 
+let c;
+
 socket.onopen = function () {
     console.log("socket is opened");
 };
@@ -42,9 +44,12 @@ function setup() {
     // createCanvas(displayWidth, displayHeight)
     createCanvas(displayWidth, displayWidth*1.6)
 
-    // appTitle = new P("Matrix");
-    // appTitle.position(70,10);
-    // appTitle.makeHeader();
+    /* ============================== */
+    yMatrix = 50;
+
+    c = new Circle();
+    c.position(10, 10);
+    c.defaultColor(10, 10, 10, 10);
 
     /* ============================== */
     yType = 310;
@@ -150,6 +155,8 @@ function draw() {
             valG.update(sliderG.getValue());
             valB.update(sliderB.getValue());
         }
+
+        c.update();
     }
 
 }

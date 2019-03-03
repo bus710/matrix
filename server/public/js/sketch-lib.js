@@ -115,29 +115,42 @@ class P {
 
 class Circle {
     constructor() {
-        this.x = windowWidth - 17;
-        this.y = windowHeight - 17;
+        this.x = 0;
+        this.y = 0;
         this.h = 20;
         this.w = 20;
-        this.blinkFlag = 0;
+        this.selected = 0;
         this.hz = 0;
+        this.r = 0;
+        this.g = 0;
+        this.b = 0;
+        this.a = 0;
+        this.e = ellipse(this.x, this.y, this.h, this.w);
     }
 
-    blink() {
-        stroke('black');
-        this.hz += 1;
-        if (this.hz > 30) {
-            this.hz = 0;
-            if (this.blinkFlag == 0) {
-                this.blinkFlag = 1;
-                fill('white');
-            }
-            else {
-                this.blinkFlag = 0;
-                fill('black');
-            }
+    defaultColor(r, g, b, a) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+    }
+
+    position(x, y) {
+        delete this.e;
+        this.x = x;
+        this.y = y;
+        this.e = ellipse(this.x, this.y, this.h, this.w);
+    }
+
+    update() {
+        delete this.e;
+        if (this.selected) {
+            stroke('black')
+        } else {
+            stroke('white')
         }
-        ellipse(this.x, this.y, this.h, this.w);
+        fill(this.r, this.g, this.b, this.a)
+        this.e = ellipse(this.x, this.y, this.h, this.w);
     }
 }
 
