@@ -100,12 +100,16 @@ class P {
     }
 
     makeNormal() {
-        this.p.style('font-size', '16px');
+        this.p.style('font-size', '30px');
         this.p.style('height', '1px');
         this.p.style('width', '400px');
         this.p.style('margin', '0px');
         this.p.style('line-height', '1.7')
         this.p.style('text-align', 'justify')
+    }
+
+    update(string) {
+        this.p.elt.innerText = string;
     }
 }
 
@@ -137,3 +141,145 @@ class Circle {
     }
 }
 
+
+class ListBox {
+    constructor(name) {
+        this.select = createSelect(name);
+        this.select.changed(() => this.itemChanged())
+        this.channel = [];
+        this.select.position(0, 0);
+        this.addItem('None');
+    }
+
+    addItem(item) {
+        this.select.option(item);
+    }
+
+    /* This makes an item to be selected. */
+    selectItem(index) {
+        this.elt = new p5.Element(this.select.elt);
+        if (this.elt.elt.options.length >= index) {
+            this.elt.elt.options[index].selected = true;
+        }
+    }
+
+    /* This returns the string if a selected item. */
+    selectedItem() {
+        this.elt = new p5.Element(this.select.elt);
+        var selectedIndex = this.elt.elt.options.selectedIndex;
+        return this.elt.elt.options[selectedIndex].value;
+    }
+
+    addChannel(channel) {
+        if ((channel != null) &&
+            (channel.length == 2)) {
+            this.channel = channel;
+        }
+    }
+
+    itemChanged() {
+        var selectedIndex = this.select.elt.options.selectedIndex;
+        this.elt = new p5.Element(this.select.elt);
+        var selectedItem = this.elt.elt.options[selectedIndex].label;
+        // console.log(selectedItem);
+        if (selectedItem != 'None') {
+            /* A channel for connection request - comport open request */
+            // toRendererEmitter.emit(this.channel[0], selectedItem);
+        } else {
+            /* A channel for disconnection request - comport close request */
+            // toRendererEmitter.emit(this.channel[1], 'None');
+        }
+    }
+
+    hasItem(item) {
+        var len = this.select.elt.options.length;
+
+        for (var i = 0; i < len; i++) {
+            var v = this.select.elt.options[i].value;
+            if (v == item) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    get x() {
+        return this.select.x;
+    }
+    set x(x) {
+        this.select.x = x;
+    }
+    get y() {
+        return this.select.y;
+    }
+    set y(y) {
+        this.select.y = y;
+    }
+    position(x, y) {
+        this.x = x;
+        this.y = y;
+        this.select.position(x, y);
+    }
+}
+
+class Slider {
+    constructor(name) {
+        this.name = name;
+        this.s = createSlider(0, 100, 0, 10);
+        this.min = 0;
+        this.max = 64;
+        this.x = 0;
+        this.y = 0;
+        this.changed = 0;
+        this.value = 0;
+    }
+
+    range(min, max, value) {
+        this.s.elt.min = min;
+        this.s.elt.max = max;
+        this.s.elt.value = value;
+    }
+
+    getValue() {
+        return this.s.elt.value;
+    }
+
+    setValue(v) {
+        this.s.elt.value = v;
+        this.value = v;
+    }
+
+    getChanged() {
+        return this.changed;
+    }
+
+    clearChanged() {
+        this.changed = 0;
+    }
+
+    checkChanged() {
+        if (this.s.elt.value != this.value) {
+            this.value = this.s.elt.value;
+            this.changed = 1;
+        }
+    }
+
+    get x() {
+        return this.s.x;
+    }
+    set x(x) {
+        this.s.x = x;
+    }
+    get y() {
+        return this.s.y;
+    }
+    set y(y) {
+        this.s.y = y;
+    }
+
+    position(x, y) {
+        this.x = x;
+        this.y = y;
+        this.s.position(x, y);
+    }
+}
