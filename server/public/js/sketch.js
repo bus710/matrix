@@ -31,16 +31,38 @@ let btnApply;
 
 let drawCnt = 0;
 
-let c;
-
+/* Events =========================== */
 socket.onopen = function () {
-    console.log("socket is opened");
+    console.log('socket is opened');
 };
 
 socket.onmessage = function (e) {
-    console.log("got a message: " + e.data);
+    console.log('got a message: ' + e.data);
 };
 
+let eBtnAll = new Event('btnAllPressed');
+let eBtnPartial = new Event('btnPartialPressed');
+let eBtnSingle = new Event('btnSinglePressed');
+let eBtnFlipX = new Event('btnFlipXPressed');
+let eBtnFlipY = new Event('btnFlipYPressed');
+let eBtnTurnL = new Event('btnTurnLPressed');
+let eBtnTurnR = new Event('btnTurnRPressed');
+let eBtnApply = new Event('btnApplyPressed');
+let eSliderR = new CustomEvent('sliderRChanged');
+let eSliderG = new CustomEvent('sliderGChanged');
+let eSliderB = new CustomEvent('sliderBChanged');
+
+/* Handlers =========================== */
+document.addEventListener('btnAllPressed', function(e){console.log('click!')});
+document.addEventListener('btnPartialPressed', function(e){console.log('click!')});
+document.addEventListener('btnSinglePressed', function(e){console.log('click!')});
+document.addEventListener('btnFlipXPressed', function(e){console.log('click!')});
+document.addEventListener('btnFlipYPressed', function(e){console.log('click!')});
+document.addEventListener('btnTurnLPressed', function(e){console.log('click!')});
+document.addEventListener('btnTurnRPressed', function(e){console.log('click!')});
+
+
+/* ============================== */
 function setup() {
     // createCanvas(displayWidth, displayHeight)
     createCanvas(displayWidth, displayWidth*1.6)
@@ -60,6 +82,7 @@ function setup() {
     btnAll = new Button('All');
     btnAll.position(50, yType);
     btnAll.size(100, 40);
+    btnAll.addEvent(eBtnAll);
     btnAll.addSocket(socket);
 
     btnPartial = new Button('Partial');

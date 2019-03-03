@@ -24,6 +24,7 @@ class Button {
             case 'mouseup':
                 this.buttonReactionByName();
                 this.pressed = true;
+                dispatchEvent(this.event);
                 break;
             default:
                 // console.log(event);
@@ -106,6 +107,10 @@ class Button {
         let status = this.pressed;
         this.pressed = false;
         return status;
+    }
+
+    addEvent(e) {
+        this.event = e;
     }
 }
 
