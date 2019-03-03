@@ -15,7 +15,7 @@ body {
     justify-content: left;
     /* v-align */
     align-items: flex-start;
-    background: #eeeeee; 
+    background: #333333; 
     overflow: hidden;
     overflow-x:hidden; 
     overflow-y: hidden;
@@ -88,8 +88,8 @@ input {
 
 /* Slider thumb for Chrome */
 input[type='range']::-webkit-slider-thumb {
-  width: 20px;
-  height: 30px;
+  width: 15px;
+  height: 25px;
   -webkit-appearance: none;
   appearance: none;
   border: solid;

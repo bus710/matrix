@@ -6,6 +6,7 @@ const serverIP = location.hostname
 const socket = new WebSocket("ws://" + serverIP + ":8080/message");
 
 let yMatrix;
+let matrix;
 
 let yType;
 let btnAll;
@@ -45,27 +46,30 @@ function setup() {
     createCanvas(displayWidth, displayWidth*1.6)
 
     /* ============================== */
-    yMatrix = 50;
+    yMatrix = 30;
 
-    c = new Circle();
-    c.position(10, 10);
-    c.defaultColor(10, 10, 10, 10);
+    // c = new Circle();
+    // c.position(70, 50);
+    // c.defaultColor(255, 255, 255);
+
+    matrix = new Matrix();
+    matrix.position(80, yMatrix);
 
     /* ============================== */
-    yType = 310;
+    yType = 320;
     btnAll = new Button('All');
-    btnAll.position(60, yType);
-    btnAll.size(90, 40);
+    btnAll.position(50, yType);
+    btnAll.size(100, 40);
     btnAll.addSocket(socket);
 
-    btnPartial= new Button('Partial');
-    btnPartial.position(160, yType);
-    btnPartial.size(90, 40);
+    btnPartial = new Button('Partial');
+    btnPartial.position(155, yType);
+    btnPartial.size(100, 40);
     btnPartial.addSocket(socket);
 
-    btnSingle= new Button('Single');
+    btnSingle = new Button('Single');
     btnSingle.position(260, yType);
-    btnSingle.size(90, 40);
+    btnSingle.size(100, 40);
     btnSingle.addSocket(socket);
 
     /* ============================== */
@@ -75,12 +79,12 @@ function setup() {
     txtR.makeNormal();
 
     valR = new P("0");
-    valR.position(120, yR);
+    valR.position(130, yR);
     valR.makeNormal();
 
     sliderR = new Slider();
-    sliderR.range(0, 100, 0);
-    sliderR.position(210, yR+15);
+    sliderR.range(0, 255, 0);
+    sliderR.position(215, yR+15);
 
     /* ============================== */
     yG = yR + 40;
@@ -89,12 +93,12 @@ function setup() {
     txtG.makeNormal();
 
     valG = new P("0");
-    valG.position(120, yG);
+    valG.position(130, yG);
     valG.makeNormal();
 
     sliderG = new Slider();
-    sliderG.range(0, 100, 0);
-    sliderG.position(210, yG+15);
+    sliderG.range(0, 255, 0);
+    sliderG.position(215, yG+15);
 
     /* ============================== */
     yB = yG + 40;
@@ -103,15 +107,15 @@ function setup() {
     txtB.makeNormal();
 
     valB = new P("0");
-    valB.position(120, yB);
+    valB.position(130, yB);
     valB.makeNormal();
 
     sliderB = new Slider();
-    sliderB.range(0, 100, 0);
-    sliderB.position(210, yB+15);
+    sliderB.range(0, 255, 0);
+    sliderB.position(215, yB+15);
 
     /* ============================== */
-    yFlip = 500;
+    yFlip = 490;
     btnFlipX = new Button('Flip X');
     btnFlipX.position(50, yFlip);
     btnFlipX.addSocket(socket);
@@ -121,7 +125,7 @@ function setup() {
     btnFlipY.addSocket(socket);
 
     /* ============================== */
-    yTurn = 550;
+    yTurn = 540;
     btnTurnL = new Button('Turn Left');
     btnTurnL.position(50, yTurn);
     btnTurnL.addSocket(socket);
@@ -131,7 +135,7 @@ function setup() {
     btnTurnR.addSocket(socket);
 
     /* ============================== */
-    yApply = 600;
+    yApply = 590;
     btnApply = new Button('Apply');
     btnApply.position(50, yApply);
     btnApply.size(310, 40);
@@ -156,7 +160,7 @@ function draw() {
             valB.update(sliderB.getValue());
         }
 
-        c.update();
+        matrix.update();
     }
 
 }
