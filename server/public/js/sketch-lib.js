@@ -11,6 +11,7 @@ class Button {
         this.button.mousePressed(() => this.buttonReaction());
         this.button.mouseReleased(() => this.buttonReaction());
         this.socket;
+        this.pressed = false;
     }
 
     addSocket(socket) {
@@ -21,7 +22,19 @@ class Button {
     buttonReaction() {
         switch (event.type) {
             case 'mouseup':
+                this.buttonReactionByName();
+                this.pressed = true;
+                break;
+            default:
                 // console.log(event);
+                break;
+        }
+    }
+
+    buttonReactionByName() {
+                // console.log(event);
+        switch (this.name) {
+            case 'Apply':
                 this.socket.send(
                     JSON.stringify({message: "hello server!"}))
                 axios.get('/api')
@@ -32,8 +45,21 @@ class Button {
                         console.log(error);
                     });
                 break;
-            default:
-                // console.log(event);
+            case 'All':
+                break;
+            case 'Partial':
+                break;
+            case 'Single':
+                break;
+            case 'Flip X':
+                break;
+            case 'Flip Y':
+                break;
+            case 'Turn X':
+                break;
+            case 'Turn Y':
+                break;
+            default: 
                 break;
         }
     }
@@ -74,6 +100,12 @@ class Button {
         this.w = w;
         this.h = h;
         this.button.size(w, h);
+    }
+
+    getPressed() {
+        let status = this.pressed;
+        this.pressed = false;
+        return status;
     }
 }
 
@@ -148,7 +180,7 @@ class Slider {
         this.changed = 0;
     }
 
-    checkChanged() {
+    updateChanged() {
         if (this.s.elt.value != this.value) {
             this.value = this.s.elt.value;
             this.changed = 1;
@@ -211,6 +243,22 @@ class Circle {
         this.e = ellipse(this.x, this.y, this.h, this.w);
     }
 
+    getPosition() {
+        return [this.x, this.y];
+    }
+
+    getSelected() {
+        return this.selected;
+    }
+
+    setSelected() {
+        this.selected = true;
+    }
+
+    clearSelected() {
+        this.selected = false;
+    }
+
     update() {
         delete this.e;
         if (this.selected) {
@@ -257,20 +305,78 @@ class Matrix {
         } else {
             this.mode = m;
         }
+
+        switch (this.mode) {
+            case 'All': 
+                for (let i = 0; i < 8; i++) {
+                    for (let j = 0; j < 8; j++) {
+                        this.m[i][j].circle.setSelected();
+                    }
+                }
+                break;
+            case 'Partial':
+            case 'Single':
+                for (let i = 0; i < 8; i++) {
+                    for (let j = 0; j < 8; j++) {
+                        this.m[i][j].circle.clearSelected();
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    getMode() {
+        return this.mode;
+    }
+
+    setColor(r, g, b) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+    }
+
+    checkSelectedCircle(x, y) {
+        if (this.mode == 'Single') {
+            for (let i = 0; i < 8; i++) {
+                for (let j = 0; j < 8; j++) {
+                    this.m[i][j].circle.clearSelected();
+                }
+            }
+        }
+
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+
+                let circlePosition = this.m[i][j].circle.getPosition();
+
+                if ((circlePosition[0] > x - 10) &&
+                    (circlePosition[0] < x + 10) &&
+                    (circlePosition[1] > y - 10) &&
+                    (circlePosition[1] < y + 10)) {
+                    if (this.m[i][j].circle.getSelected()) {
+                        this.m[i][j].circle.clearSelected();
+                    } else {
+                        this.m[i][j].circle.setSelected();
+                    }
+                }
+            }
+        }
     }
 
     update() {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
-                // console.log(i, j)
-                this.m[i][j].circle.defaultColor(0,0,0);
+                if (this.m[i][j].circle.getSelected()) {
+                    this.m[i][j].circle.defaultColor(
+                        parseInt(this.r, 10),
+                        parseInt(this.g, 10),
+                        parseInt(this.b, 10));
+                }
                 this.m[i][j].circle.position(this.x + 35 * i, this.y + 35 * j);
                 this.m[i][j].circle.update();
             }
-            this.m[2][2].circle.defaultColor(200,0,0);
-            this.m[2][2].circle.update();
-            this.m[4][4].circle.defaultColor(0,0,200);
-            this.m[4][4].circle.update();
         }
     }
 

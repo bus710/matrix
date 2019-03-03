@@ -148,21 +148,55 @@ function draw() {
         drawCnt = 0;
         background('#dddddd')
 
-        sliderR.checkChanged();
-        sliderG.checkChanged();
-        sliderB.checkChanged();
+        if (btnAll.getPressed()) {
+            matrix.setMode('All');
+            sliderR.setValue(0);
+            sliderG.setValue(0);
+            sliderB.setValue(0);
+        }
 
+        if (btnPartial.getPressed()) {
+            matrix.setMode('Partial');
+        }
+
+        if (btnSingle.getPressed()) {
+            matrix.setMode('Single');
+        }
+
+        /* This methods just update the internal variable */
+        sliderR.updateChanged();
+        sliderG.updateChanged();
+        sliderB.updateChanged();
+
+        /* This methods actually check if the internal variables are changed */
         if (sliderR.getChanged() ||
             sliderG.getChanged() ||
             sliderB.getChanged()) {
             valR.update(sliderR.getValue());
             valG.update(sliderG.getValue());
             valB.update(sliderB.getValue());
+            matrix.setColor(
+                sliderR.getValue(), 
+                sliderG.getValue(),
+                sliderB.getValue());
         }
 
         matrix.update();
     }
 
+}
+
+function mouseClicked () {
+    switch(matrix.getMode()) {
+        case 'All':
+            break;
+        case 'Partial':
+        case 'Single':
+            matrix.checkSelectedCircle(mouseX, mouseY)
+            break;
+        default:
+            break;
+    }
 }
 
 function windowResized() {
