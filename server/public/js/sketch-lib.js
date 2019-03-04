@@ -387,7 +387,6 @@ class Matrix {
                 );
             }
         }
-
-        console.log(matrixA)
     }
+
 }
