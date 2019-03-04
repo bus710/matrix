@@ -312,6 +312,7 @@ class Matrix {
                     this.m[i][j].circle.setSelected(false);
                 }
             }
+            this.mode = 'Single'
         }
     }
 

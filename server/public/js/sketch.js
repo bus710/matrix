@@ -156,6 +156,24 @@ function draw() {
         background('#dddddd')
 
         matrix.update();
+
+        btnAll.setNormal();
+        btnPartial.setNormal();
+        btnSingle.setNormal();
+        switch (matrix.getMode()) {
+            case 'All':
+                btnAll.setBold();
+                break;
+            case 'Partial':
+                btnPartial.setBold();
+                break;
+            case 'Single':
+                btnSingle.setBold();
+                break;
+            case 'None':
+            default:
+                break;
+        }
     }
 }
 
