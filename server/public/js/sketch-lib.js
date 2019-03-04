@@ -10,7 +10,6 @@ class Button {
         this.button.mouseOut(() => this.buttonReaction());
         this.button.mousePressed(() => this.buttonReaction());
         this.button.mouseReleased(() => this.buttonReaction());
-        this.socket;
         this.event;
     }
 
@@ -40,6 +39,14 @@ class Button {
         this.w = w;
         this.h = h;
         this.button.size(w, h);
+    }
+
+    setBold() {
+        this.button.style('font-weight', 'bold');
+    }
+
+    setNormal() {
+        this.button.style('font-weight', 'normal');
     }
 
     setEvent(e) {
@@ -93,7 +100,6 @@ class Slider {
         this.y = 0;
         this.value = 0;
         this.s.changed(() => this.sliderReaction());
-
     }
 
     setRange(min, max, value, step) {
@@ -256,6 +262,13 @@ class Matrix {
     }
 
     checkSelectedCircle(x, y) {
+        /* If there was a touch/click, 
+            the mode should be changed to single 
+            regardless of the action's accuracy. */
+        if (this.mode == 'All') {
+            this.mode = 'Single';
+        }
+
         if (this.mode == 'Single') {
             for (let i = 0; i < 8; i++) {
                 for (let j = 0; j < 8; j++) {

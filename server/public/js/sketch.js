@@ -160,15 +160,18 @@ function draw() {
 }
 
 function mouseClicked () {
-    switch(matrix.getMode()) {
-        case 'All':
-            break;
-        case 'Partial':
-        case 'Single':
-            matrix.checkSelectedCircle(mouseX, mouseY)
-            break;
-        default:
-            break;
+    if (mouseY < yType) {
+        btnAll.setNormal();
+        btnPartial.setNormal();
+        btnSingle.setNormal();
+
+        if (matrix.getMode() == 'Partial') {
+            btnPartial.setBold();
+        } else {
+            btnSingle.setBold();
+        }
+
+        matrix.checkSelectedCircle(mouseX, mouseY)
     }
 }
 
@@ -184,14 +187,23 @@ document.addEventListener('btnAllPressed', function(e){
     slidersUpdated();
     matrix.update();
     matrix.setMode('All');
+    btnAll.setBold();
+    btnPartial.setNormal();
+    btnSingle.setNormal();
 });
 
 document.addEventListener('btnPartialPressed', function(e){
     matrix.setMode('Partial');
+    btnAll.setNormal();
+    btnPartial.setBold();
+    btnSingle.setNormal();
 });
 
 document.addEventListener('btnSinglePressed', function(e){
     matrix.setMode('Single');
+    btnAll.setNormal();
+    btnPartial.setNormal();
+    btnSingle.setBold();
 });
 
 document.addEventListener('btnFlipXPressed', function(e){
