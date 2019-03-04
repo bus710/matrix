@@ -12,6 +12,7 @@ class Button {
         this.button.mouseReleased(() => this.buttonReaction());
         this.socket;
         this.pressed = false;
+        this.event;
     }
 
     addSocket(socket) {
@@ -24,7 +25,7 @@ class Button {
             case 'mouseup':
                 this.buttonReactionByName();
                 this.pressed = true;
-                dispatchEvent(this.event);
+                document.dispatchEvent(this.event);
                 break;
             default:
                 // console.log(event);
@@ -160,6 +161,8 @@ class Slider {
         this.y = 0;
         this.changed = 0;
         this.value = 0;
+        this.s.changed(() => this.sliderReaction());
+
     }
 
     range(min, max, value) {
@@ -209,6 +212,14 @@ class Slider {
         this.x = x;
         this.y = y;
         this.s.position(x, y);
+    }
+
+    addEvent(e) {
+        this.event = e;
+    }
+
+    sliderReaction() {
+        document.dispatchEvent(this.event);
     }
 }
 

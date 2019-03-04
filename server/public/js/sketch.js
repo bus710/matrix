@@ -48,19 +48,27 @@ let eBtnFlipY = new Event('btnFlipYPressed');
 let eBtnTurnL = new Event('btnTurnLPressed');
 let eBtnTurnR = new Event('btnTurnRPressed');
 let eBtnApply = new Event('btnApplyPressed');
-let eSliderR = new CustomEvent('sliderRChanged');
+
+let eSliderR = new CustomEvent('sliderRChanged', {detail: { value: 0}});
 let eSliderG = new CustomEvent('sliderGChanged');
 let eSliderB = new CustomEvent('sliderBChanged');
 
 /* Handlers =========================== */
 document.addEventListener('btnAllPressed', function(e){console.log('click!')});
+
 document.addEventListener('btnPartialPressed', function(e){console.log('click!')});
 document.addEventListener('btnSinglePressed', function(e){console.log('click!')});
 document.addEventListener('btnFlipXPressed', function(e){console.log('click!')});
 document.addEventListener('btnFlipYPressed', function(e){console.log('click!')});
 document.addEventListener('btnTurnLPressed', function(e){console.log('click!')});
 document.addEventListener('btnTurnRPressed', function(e){console.log('click!')});
+document.addEventListener('btnApplyPressed', function(e){console.log('click!')});
 
+document.addEventListener('sliderRChanged', function(e){
+    console.log(sliderR.getValue());
+});
+document.addEventListener('sliderGChanged', function(e){console.log('click!')});
+document.addEventListener('sliderBChanged', function(e){console.log('click!')});
 
 /* ============================== */
 function setup() {
@@ -88,11 +96,13 @@ function setup() {
     btnPartial = new Button('Partial');
     btnPartial.position(155, yType);
     btnPartial.size(100, 40);
+    btnPartial.addEvent(eBtnPartial);
     btnPartial.addSocket(socket);
 
     btnSingle = new Button('Single');
     btnSingle.position(260, yType);
     btnSingle.size(100, 40);
+    btnSingle.addEvent(eBtnSingle);
     btnSingle.addSocket(socket);
 
     /* ============================== */
@@ -108,6 +118,7 @@ function setup() {
     sliderR = new Slider();
     sliderR.range(0, 255, 0);
     sliderR.position(215, yR+15);
+    sliderR.addEvent(eSliderR);
 
     /* ============================== */
     yG = yR + 40;
@@ -122,6 +133,7 @@ function setup() {
     sliderG = new Slider();
     sliderG.range(0, 255, 0);
     sliderG.position(215, yG+15);
+    sliderG.addEvent(eSliderG);
 
     /* ============================== */
     yB = yG + 40;
@@ -136,26 +148,31 @@ function setup() {
     sliderB = new Slider();
     sliderB.range(0, 255, 0);
     sliderB.position(215, yB+15);
+    sliderB.addEvent(eSliderB);
 
     /* ============================== */
     yFlip = 490;
     btnFlipX = new Button('Flip X');
     btnFlipX.position(50, yFlip);
     btnFlipX.addSocket(socket);
+    btnFlipX.addEvent(eBtnFlipX);
 
     btnFlipY = new Button('Flip Y');
     btnFlipY.position(210, yFlip);
     btnFlipY.addSocket(socket);
+    btnFlipY.addEvent(eBtnFlipY);
 
     /* ============================== */
     yTurn = 540;
     btnTurnL = new Button('Turn Left');
     btnTurnL.position(50, yTurn);
     btnTurnL.addSocket(socket);
+    btnTurnL.addEvent(eBtnTurnL);
 
     btnTurnR = new Button('Turn Right');
     btnTurnR.position(210, yTurn);
     btnTurnR.addSocket(socket);
+    btnTurnR.addEvent(eBtnTurnR);
 
     /* ============================== */
     yApply = 590;
@@ -163,6 +180,7 @@ function setup() {
     btnApply.position(50, yApply);
     btnApply.size(310, 40);
     btnApply.addSocket(socket);
+    btnApply.addEvent(eBtnApply);
 }
 
 function draw() {
@@ -206,7 +224,6 @@ function draw() {
 
         matrix.update();
     }
-
 }
 
 function mouseClicked () {
