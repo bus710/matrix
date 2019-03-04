@@ -163,9 +163,9 @@ class Circle {
     }
 
     getColor() {
-        this.r = this.r == 255? 0: this.r;
-        this.g = this.g == 255? 0: this.g;
-        this.b = this.b == 255? 0: this.b;
+        this.r = this.r == 255 ? 0 : this.r;
+        this.g = this.g == 255 ? 0 : this.g;
+        this.b = this.b == 255 ? 0 : this.b;
         return [this.r, this.g, this.b];
     }
 
@@ -217,8 +217,9 @@ class Matrix {
             for (j = 0; j < 8; j++) {
                 this.m[i][j] = {
                     circle: new Circle(),
-                    location: [i, j]};
-                this.m[i][j].circle.setColor(0,0,0);
+                    location: [i, j]
+                };
+                this.m[i][j].circle.setColor(0, 0, 0);
             }
         }
     }
@@ -228,9 +229,9 @@ class Matrix {
         this.y = y;
     }
 
-    setMode(m){
-        if ((m != 'All') && 
-            (m != 'Partial') && 
+    setMode(m) {
+        if ((m != 'All') &&
+            (m != 'Partial') &&
             (m != 'Single')) {
             this.mode = 'None';
         } else {
@@ -238,7 +239,7 @@ class Matrix {
         }
 
         switch (this.mode) {
-            case 'All': 
+            case 'All':
                 for (let i = 0; i < 8; i++) {
                     for (let j = 0; j < 8; j++) {
                         this.m[i][j].circle.setSelected(true);
@@ -332,7 +333,7 @@ class Matrix {
     }
 
     flip(dir) {
-        if ((dir != 'lr') && 
+        if ((dir != 'lr') &&
             (dir != 'ud')) {
             return;
         }
@@ -342,20 +343,20 @@ class Matrix {
         let matrixB = new Array(8);
         let matrixA = new Array(8);    // Anti Diagonal to flip.
 
-        for (let i=0; i<8; i++) {
+        for (let i = 0; i < 8; i++) {
             matrixR[i] = new Array(8).fill(0);
             matrixG[i] = new Array(8).fill(0);
             matrixB[i] = new Array(8).fill(0);
             matrixA[i] = new Array(8).fill(0);
-            matrixA[i][7-i] = 1;
+            matrixA[i][7 - i] = 1;
         }
 
-        for (let i=0; i<8; i++) {
-            for (let j=0; j<8; j++) {
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
                 let tmpR = 0;
                 let tmpG = 0;
                 let tmpB = 0;
-                for (let k=0; k<8; k++) {
+                for (let k = 0; k < 8; k++) {
                     if (dir == 'ud') {
                         /* Flip the matrix based on X axis */
                         let tmp1 = matrixA[k][j];
@@ -378,8 +379,8 @@ class Matrix {
             }
         }
 
-        for (let i=0; i<8; i++) {
-            for (let j=0; j<8; j++) {
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
                 this.m[i][j].circle.setColor(
                     matrixR[i][j],
                     matrixG[i][j],
@@ -387,6 +388,90 @@ class Matrix {
                 );
             }
         }
+    }
+
+    rot90(dir) {
+        if ((dir != 'left') &&
+            (dir != 'right')) {
+            return;
+        }
+
+        let tmp = [];
+        for (let i = 0; i < 7; i++) {
+            tmp = this.m[i][0].circle.getColor();
+            this.m[i][0].circle.setColor(
+                this.m[7][i].circle.getColor()[0],
+                this.m[7][i].circle.getColor()[1],
+                this.m[7][i].circle.getColor()[2]);
+            this.m[7][i].circle.setColor(
+                this.m[7 - i][7].circle.getColor()[0],
+                this.m[7 - i][7].circle.getColor()[1],
+                this.m[7 - i][7].circle.getColor()[2]);
+            this.m[7 - i][7].circle.setColor(
+                this.m[0][7 - i].circle.getColor()[0],
+                this.m[0][7 - i].circle.getColor()[1],
+                this.m[0][7 - i].circle.getColor()[2]);
+            this.m[0][7 - i].circle.setColor(
+                tmp[0],
+                tmp[1],
+                tmp[2]);
+        }
+        for (let i = 1; i < 6; i++) {
+            tmp = this.m[i][1].circle.getColor();
+            this.m[i][1].circle.setColor(
+                this.m[6][i].circle.getColor()[0],
+                this.m[6][i].circle.getColor()[1],
+                this.m[6][i].circle.getColor()[2]);
+            this.m[6][i].circle.setColor(
+                this.m[7 - i][6].circle.getColor()[0],
+                this.m[7 - i][6].circle.getColor()[1],
+                this.m[7 - i][6].circle.getColor()[2]);
+            this.m[7 - i][6].circle.setColor(
+                this.m[1][7 - i].circle.getColor()[0],
+                this.m[1][7 - i].circle.getColor()[1],
+                this.m[1][7 - i].circle.getColor()[2]);
+            this.m[1][7 - i].circle.setColor(
+                tmp[0],
+                tmp[1],
+                tmp[2]);
+        }
+        for (let i = 2; i < 5; i++) {
+            tmp = this.m[i][2].circle.getColor();
+            this.m[i][2].circle.setColor(
+                this.m[5][i].circle.getColor()[0],
+                this.m[5][i].circle.getColor()[1],
+                this.m[5][i].circle.getColor()[2]);
+            this.m[5][i].circle.setColor(
+                this.m[7 - i][5].circle.getColor()[0],
+                this.m[7 - i][5].circle.getColor()[1],
+                this.m[7 - i][5].circle.getColor()[2]);
+            this.m[7 - i][5].circle.setColor(
+                this.m[2][7 - i].circle.getColor()[0],
+                this.m[2][7 - i].circle.getColor()[1],
+                this.m[2][7 - i].circle.getColor()[2]);
+            this.m[2][7 - i].circle.setColor(
+                tmp[0],
+                tmp[1],
+                tmp[2]);
+        }
+
+        tmp = this.m[3][3].circle.getColor();
+        this.m[3][3].circle.setColor(
+            this.m[4][3].circle.getColor()[0],
+            this.m[4][3].circle.getColor()[1],
+            this.m[4][3].circle.getColor()[2]);
+        this.m[4][3].circle.setColor(
+            this.m[4][4].circle.getColor()[0],
+            this.m[4][4].circle.getColor()[1],
+            this.m[4][4].circle.getColor()[2]);
+        this.m[4][4].circle.setColor(
+            this.m[3][4].circle.getColor()[0],
+            this.m[3][4].circle.getColor()[1],
+            this.m[3][4].circle.getColor()[2]);
+        this.m[3][4].circle.setColor(
+            tmp[0],
+            tmp[1],
+            tmp[2]);
     }
 
 }
