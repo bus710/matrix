@@ -3,7 +3,7 @@
     so that we can immediately see the updated sketch. */
 
 const serverIP = location.hostname
-const socket = new WebSocket("ws://" + serverIP + ":8080/message");
+const webSocket = new WebSocket("ws://" + serverIP + ":8080/message");
 
 let yMatrix;
 let matrix;
@@ -31,15 +31,6 @@ let btnApply;
 
 let drawCnt = 0;
 
-/* Events =========================== */
-socket.onopen = function () {
-    console.log('socket is opened');
-};
-
-socket.onmessage = function (e) {
-    console.log('got a message: ' + e.data);
-};
-
 let eBtnAll = new Event('btnAllPressed');
 let eBtnPartial = new Event('btnPartialPressed');
 let eBtnSingle = new Event('btnSinglePressed');
@@ -49,26 +40,9 @@ let eBtnTurnL = new Event('btnTurnLPressed');
 let eBtnTurnR = new Event('btnTurnRPressed');
 let eBtnApply = new Event('btnApplyPressed');
 
-let eSliderR = new CustomEvent('sliderRChanged', {detail: { value: 0}});
-let eSliderG = new CustomEvent('sliderGChanged');
-let eSliderB = new CustomEvent('sliderBChanged');
-
-/* Handlers =========================== */
-document.addEventListener('btnAllPressed', function(e){console.log('click!')});
-
-document.addEventListener('btnPartialPressed', function(e){console.log('click!')});
-document.addEventListener('btnSinglePressed', function(e){console.log('click!')});
-document.addEventListener('btnFlipXPressed', function(e){console.log('click!')});
-document.addEventListener('btnFlipYPressed', function(e){console.log('click!')});
-document.addEventListener('btnTurnLPressed', function(e){console.log('click!')});
-document.addEventListener('btnTurnRPressed', function(e){console.log('click!')});
-document.addEventListener('btnApplyPressed', function(e){console.log('click!')});
-
-document.addEventListener('sliderRChanged', function(e){
-    console.log(sliderR.getValue());
-});
-document.addEventListener('sliderGChanged', function(e){console.log('click!')});
-document.addEventListener('sliderBChanged', function(e){console.log('click!')});
+let eSliderR = new Event('sliderRChanged');
+let eSliderG = new Event('sliderGChanged');
+let eSliderB = new Event('sliderBChanged');
 
 /* ============================== */
 function setup() {
@@ -83,104 +57,96 @@ function setup() {
     // c.defaultColor(255, 255, 255);
 
     matrix = new Matrix();
-    matrix.position(80, yMatrix);
+    matrix.setPosition(80, yMatrix);
 
     /* ============================== */
     yType = 320;
     btnAll = new Button('All');
-    btnAll.position(50, yType);
-    btnAll.size(100, 40);
-    btnAll.addEvent(eBtnAll);
-    btnAll.addSocket(socket);
+    btnAll.setPosition(50, yType);
+    btnAll.setSize(100, 40);
+    btnAll.setEvent(eBtnAll);
 
     btnPartial = new Button('Partial');
-    btnPartial.position(155, yType);
-    btnPartial.size(100, 40);
-    btnPartial.addEvent(eBtnPartial);
-    btnPartial.addSocket(socket);
+    btnPartial.setPosition(155, yType);
+    btnPartial.setSize(100, 40);
+    btnPartial.setEvent(eBtnPartial);
 
     btnSingle = new Button('Single');
-    btnSingle.position(260, yType);
-    btnSingle.size(100, 40);
-    btnSingle.addEvent(eBtnSingle);
-    btnSingle.addSocket(socket);
+    btnSingle.setPosition(260, yType);
+    btnSingle.setSize(100, 40);
+    btnSingle.setEvent(eBtnSingle);
 
     /* ============================== */
     yR = 360;
     txtR = new P("R:");
-    txtR.position(60, yR);
-    txtR.makeNormal();
+    txtR.setPosition(60, yR);
+    txtR.setNormal();
 
     valR = new P("0");
-    valR.position(130, yR);
-    valR.makeNormal();
+    valR.setPosition(130, yR);
+    valR.setNormal();
 
     sliderR = new Slider();
-    sliderR.range(0, 255, 0);
-    sliderR.position(215, yR+15);
-    sliderR.addEvent(eSliderR);
+    sliderR.setRange(0, 255, 0, 10);
+    sliderR.setPosition(215, yR+15);
+    sliderR.setEvent(eSliderR);
 
     /* ============================== */
     yG = yR + 40;
     txtG = new P("G:");
-    txtG.position(60, yG);
-    txtG.makeNormal();
+    txtG.setPosition(60, yG);
+    txtG.setNormal();
 
     valG = new P("0");
-    valG.position(130, yG);
-    valG.makeNormal();
+    valG.setPosition(130, yG);
+    valG.setNormal();
 
     sliderG = new Slider();
-    sliderG.range(0, 255, 0);
-    sliderG.position(215, yG+15);
-    sliderG.addEvent(eSliderG);
+    sliderG.setRange(0, 255, 0, 10);
+    sliderG.setPosition(215, yG+15);
+    sliderG.setEvent(eSliderG);
 
     /* ============================== */
     yB = yG + 40;
     txtB = new P("B:");
-    txtB.position(60, yB);
-    txtB.makeNormal();
+    txtB.setPosition(60, yB);
+    txtB.setNormal();
 
     valB = new P("0");
-    valB.position(130, yB);
-    valB.makeNormal();
+    valB.setPosition(130, yB);
+    valB.setNormal();
 
     sliderB = new Slider();
-    sliderB.range(0, 255, 0);
-    sliderB.position(215, yB+15);
-    sliderB.addEvent(eSliderB);
+    sliderB.setRange(0, 255, 0, 10);
+    sliderB.setPosition(215, yB+15);
+    sliderB.setEvent(eSliderB);
 
     /* ============================== */
     yFlip = 490;
     btnFlipX = new Button('Flip X');
-    btnFlipX.position(50, yFlip);
-    btnFlipX.addSocket(socket);
-    btnFlipX.addEvent(eBtnFlipX);
+    btnFlipX.setPosition(50, yFlip);
+    btnFlipX.setEvent(eBtnFlipX);
 
     btnFlipY = new Button('Flip Y');
-    btnFlipY.position(210, yFlip);
-    btnFlipY.addSocket(socket);
-    btnFlipY.addEvent(eBtnFlipY);
+    btnFlipY.setPosition(210, yFlip);
+    btnFlipY.setEvent(eBtnFlipY);
 
     /* ============================== */
     yTurn = 540;
     btnTurnL = new Button('Turn Left');
-    btnTurnL.position(50, yTurn);
-    btnTurnL.addSocket(socket);
-    btnTurnL.addEvent(eBtnTurnL);
+    btnTurnL.setPosition(50, yTurn);
+    btnTurnL.setEvent(eBtnTurnL);
 
     btnTurnR = new Button('Turn Right');
-    btnTurnR.position(210, yTurn);
-    btnTurnR.addSocket(socket);
-    btnTurnR.addEvent(eBtnTurnR);
+    btnTurnR.setPosition(210, yTurn);
+    btnTurnR.setEvent(eBtnTurnR);
 
     /* ============================== */
     yApply = 590;
     btnApply = new Button('Apply');
-    btnApply.position(50, yApply);
-    btnApply.size(310, 40);
-    btnApply.addSocket(socket);
-    btnApply.addEvent(eBtnApply);
+    btnApply.setPosition(50, yApply);
+    btnApply.setSize(310, 40);
+    btnApply.setEvent(eBtnApply);
 }
 
 function draw() {
@@ -188,39 +154,6 @@ function draw() {
     if (drawCnt > 10) {
         drawCnt = 0;
         background('#dddddd')
-
-        if (btnAll.getPressed()) {
-            matrix.setMode('All');
-            sliderR.setValue(0);
-            sliderG.setValue(0);
-            sliderB.setValue(0);
-        }
-
-        if (btnPartial.getPressed()) {
-            matrix.setMode('Partial');
-        }
-
-        if (btnSingle.getPressed()) {
-            matrix.setMode('Single');
-        }
-
-        /* This methods just update the internal variable */
-        sliderR.updateChanged();
-        sliderG.updateChanged();
-        sliderB.updateChanged();
-
-        /* This methods actually check if the internal variables are changed */
-        if (sliderR.getChanged() ||
-            sliderG.getChanged() ||
-            sliderB.getChanged()) {
-            valR.update(sliderR.getValue());
-            valG.update(sliderG.getValue());
-            valB.update(sliderB.getValue());
-            matrix.setColor(
-                sliderR.getValue(), 
-                sliderG.getValue(),
-                sliderB.getValue());
-        }
 
         matrix.update();
     }
@@ -242,3 +175,77 @@ function mouseClicked () {
 function windowResized() {
     createCanvas(displayWidth, displayHeight)
 }
+
+/* Event Handlers =========================== */
+document.addEventListener('btnAllPressed', function(e){
+    sliderR.setValue(0);
+    sliderG.setValue(0);
+    sliderB.setValue(0);
+    slidersUpdated();
+    matrix.update();
+    matrix.setMode('All');
+});
+
+document.addEventListener('btnPartialPressed', function(e){
+    matrix.setMode('Partial');
+});
+
+document.addEventListener('btnSinglePressed', function(e){
+    matrix.setMode('Single');
+});
+
+document.addEventListener('btnFlipXPressed', function(e){
+});
+
+document.addEventListener('btnFlipYPressed', function(e){
+});
+
+document.addEventListener('btnTurnLPressed', function(e){
+});
+
+document.addEventListener('btnTurnRPressed', function(e){
+});
+
+document.addEventListener('btnApplyPressed', function(e){
+    webSocket.send(
+        JSON.stringify({message: "hello server!"}))
+    axios.get('/api')
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+    });
+});
+
+document.addEventListener('sliderRChanged', function(e){
+    slidersUpdated();
+});
+
+document.addEventListener('sliderGChanged', function(e){
+    slidersUpdated();
+});
+
+document.addEventListener('sliderBChanged', function(e){
+    slidersUpdated();
+});
+
+/* Helper functions =================== */
+function slidersUpdated() {
+    valR.update(sliderR.getValue());
+    valG.update(sliderG.getValue());
+    valB.update(sliderB.getValue());
+    matrix.setColor(
+        sliderR.getValue(), 
+        sliderG.getValue(),
+        sliderB.getValue());
+}
+
+/* Network Handlers =================== */
+webSocket.onopen = function () {
+    console.log('socket is opened');
+};
+
+webSocket.onmessage = function (e) {
+    console.log('got a message: ' + e.data);
+};

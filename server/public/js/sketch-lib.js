@@ -11,7 +11,6 @@ class Button {
         this.button.mousePressed(() => this.buttonReaction());
         this.button.mouseReleased(() => this.buttonReaction());
         this.socket;
-        this.pressed = false;
         this.event;
     }
 
@@ -23,8 +22,6 @@ class Button {
     buttonReaction() {
         switch (event.type) {
             case 'mouseup':
-                this.buttonReactionByName();
-                this.pressed = true;
                 document.dispatchEvent(this.event);
                 break;
             default:
@@ -33,84 +30,19 @@ class Button {
         }
     }
 
-    buttonReactionByName() {
-                // console.log(event);
-        switch (this.name) {
-            case 'Apply':
-                this.socket.send(
-                    JSON.stringify({message: "hello server!"}))
-                axios.get('/api')
-                    .then(function (response) {
-                        console.log(response);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-                break;
-            case 'All':
-                break;
-            case 'Partial':
-                break;
-            case 'Single':
-                break;
-            case 'Flip X':
-                break;
-            case 'Flip Y':
-                break;
-            case 'Turn X':
-                break;
-            case 'Turn Y':
-                break;
-            default: 
-                break;
-        }
-    }
-
-    get x() {
-        return this.button.x;
-    }
-    set x(x) {
-        this.button.x = x;
-    }
-    get y() {
-        return this.button.y;
-    }
-    set y(y) {
-        this.button.y = y;
-    }
-
-    get w() {
-        return this.button.width;
-    }
-    set w(w) {
-        this.button.width = w;
-    }
-    get h() {
-        return this.button.height;
-    }
-    set h(h) {
-        this.button.height = h;
-    }
-
-    position(x, y) {
+    setPosition(x, y) {
         this.x = x;
         this.y = y;
         this.button.position(x, y);
     }
 
-    size(w, h) {
+    setSize(w, h) {
         this.w = w;
         this.h = h;
         this.button.size(w, h);
     }
 
-    getPressed() {
-        let status = this.pressed;
-        this.pressed = false;
-        return status;
-    }
-
-    addEvent(e) {
+    setEvent(e) {
         this.event = e;
     }
 }
@@ -123,13 +55,13 @@ class P {
         this.y = 0;
     }
 
-    position(x, y) {
+    setPosition(x, y) {
         this.x = x;
         this.y = y;
         this.p.position(this.x, this.y);
     }
 
-    makeHeader() {
+    setHeader() {
         this.p.style('font-size', '40px');
         this.p.style('height', '1px');
         this.p.style('width', '500px');
@@ -137,7 +69,7 @@ class P {
         this.p.style('text-align', 'justify')
     }
 
-    makeNormal() {
+    setNormal() {
         this.p.style('font-size', '30px');
         this.p.style('height', '1px');
         this.p.style('width', '400px');
@@ -159,16 +91,16 @@ class Slider {
         this.max = 255;
         this.x = 0;
         this.y = 0;
-        this.changed = 0;
         this.value = 0;
         this.s.changed(() => this.sliderReaction());
 
     }
 
-    range(min, max, value) {
+    setRange(min, max, value, step) {
         this.s.elt.min = min;
         this.s.elt.max = max;
         this.s.elt.value = value;
+        this.s.elt.setp = step;
     }
 
     getValue() {
@@ -180,41 +112,13 @@ class Slider {
         this.value = v;
     }
 
-    getChanged() {
-        return this.changed;
-    }
-
-    clearChanged() {
-        this.changed = 0;
-    }
-
-    updateChanged() {
-        if (this.s.elt.value != this.value) {
-            this.value = this.s.elt.value;
-            this.changed = 1;
-        }
-    }
-
-    get x() {
-        return this.s.x;
-    }
-    set x(x) {
-        this.s.x = x;
-    }
-    get y() {
-        return this.s.y;
-    }
-    set y(y) {
-        this.s.y = y;
-    }
-
-    position(x, y) {
+    setPosition(x, y) {
         this.x = x;
         this.y = y;
         this.s.position(x, y);
     }
 
-    addEvent(e) {
+    setEvent(e) {
         this.event = e;
     }
 
@@ -239,7 +143,7 @@ class Circle {
         this.e = ellipse(this.x, this.y, this.h, this.w);
     }
 
-    defaultColor(r, g, b) {
+    setColor(r, g, b) {
         if ((r == 0) && (g == 0) && (b == 0)) {
             this.r = 255;
             this.g = 255;
@@ -252,7 +156,7 @@ class Circle {
         this.a = 255
     }
 
-    position(x, y) {
+    setPosition(x, y) {
         delete this.e;
         this.x = x;
         this.y = y;
@@ -267,23 +171,22 @@ class Circle {
         return this.selected;
     }
 
-    setSelected() {
-        this.selected = true;
-    }
-
-    clearSelected() {
-        this.selected = false;
+    setSelected(value) {
+        this.selected = value;
     }
 
     update() {
         delete this.e;
         if (this.selected) {
+            strokeWeight(3);
             stroke('black')
         } else {
-            stroke('white')
+            strokeWeight(1);
+            stroke('black')
         }
         fill(this.r, this.g, this.b, this.a)
         this.e = ellipse(this.x, this.y, this.h, this.w);
+        strokeWeight(1);
     }
 }
 
@@ -299,16 +202,15 @@ class Matrix {
         for (i = 0; i < 8; i++) {
             this.m[i] = new Array(8);
             for (j = 0; j < 8; j++) {
-                // console.log(i, j)
                 this.m[i][j] = {
                     circle: new Circle(),
                     location: [i, j]};
-                this.m[i][j].circle.defaultColor(0,0,0);
+                this.m[i][j].circle.setColor(0,0,0);
             }
         }
     }
 
-    position(x, y) {
+    setPosition(x, y) {
         this.x = x;
         this.y = y;
     }
@@ -326,7 +228,7 @@ class Matrix {
             case 'All': 
                 for (let i = 0; i < 8; i++) {
                     for (let j = 0; j < 8; j++) {
-                        this.m[i][j].circle.setSelected();
+                        this.m[i][j].circle.setSelected(true);
                     }
                 }
                 break;
@@ -334,7 +236,7 @@ class Matrix {
             case 'Single':
                 for (let i = 0; i < 8; i++) {
                     for (let j = 0; j < 8; j++) {
-                        this.m[i][j].circle.clearSelected();
+                        this.m[i][j].circle.setSelected(false);
                     }
                 }
                 break;
@@ -357,14 +259,13 @@ class Matrix {
         if (this.mode == 'Single') {
             for (let i = 0; i < 8; i++) {
                 for (let j = 0; j < 8; j++) {
-                    this.m[i][j].circle.clearSelected();
+                    this.m[i][j].circle.setSelected(false);
                 }
             }
         }
 
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
-
                 let circlePosition = this.m[i][j].circle.getPosition();
 
                 if ((circlePosition[0] > x - 15) &&
@@ -372,9 +273,9 @@ class Matrix {
                     (circlePosition[1] > y - 15) &&
                     (circlePosition[1] < y + 15)) {
                     if (this.m[i][j].circle.getSelected()) {
-                        this.m[i][j].circle.clearSelected();
+                        this.m[i][j].circle.setSelected(false);
                     } else {
-                        this.m[i][j].circle.setSelected();
+                        this.m[i][j].circle.setSelected(true);
                     }
                 }
             }
@@ -385,15 +286,14 @@ class Matrix {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
                 if (this.m[i][j].circle.getSelected()) {
-                    this.m[i][j].circle.defaultColor(
+                    this.m[i][j].circle.setColor(
                         parseInt(this.r, 10),
                         parseInt(this.g, 10),
                         parseInt(this.b, 10));
                 }
-                this.m[i][j].circle.position(this.x + 35 * i, this.y + 35 * j);
+                this.m[i][j].circle.setPosition(this.x + 35 * i, this.y + 35 * j);
                 this.m[i][j].circle.update();
             }
         }
     }
-
 }
