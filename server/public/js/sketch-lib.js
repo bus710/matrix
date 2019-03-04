@@ -162,6 +162,13 @@ class Circle {
         this.a = 255
     }
 
+    getColor() {
+        this.r = this.r == 255? 0: this.r;
+        this.g = this.g == 255? 0: this.g;
+        this.b = this.b == 255? 0: this.b;
+        return [this.r, this.g, this.b];
+    }
+
     setPosition(x, y) {
         delete this.e;
         this.x = x;
@@ -225,7 +232,7 @@ class Matrix {
         if ((m != 'All') && 
             (m != 'Partial') && 
             (m != 'Single')) {
-            this.mode = 'All';
+            this.mode = 'None';
         } else {
             this.mode = m;
         }
@@ -240,6 +247,7 @@ class Matrix {
                 break;
             case 'Partial':
             case 'Single':
+            case 'None':
                 for (let i = 0; i < 8; i++) {
                     for (let j = 0; j < 8; j++) {
                         this.m[i][j].circle.setSelected(false);
@@ -262,6 +270,7 @@ class Matrix {
     }
 
     checkSelectedCircle(x, y) {
+        let pressed = false;
         /* If there was a touch/click, 
             the mode should be changed to single 
             regardless of the action's accuracy. */
@@ -269,7 +278,8 @@ class Matrix {
             this.mode = 'Single';
         }
 
-        if (this.mode == 'Single') {
+        if ((this.mode == 'Single') ||
+            (this.mode == 'None')) {
             for (let i = 0; i < 8; i++) {
                 for (let j = 0; j < 8; j++) {
                     this.m[i][j].circle.setSelected(false);
@@ -290,6 +300,16 @@ class Matrix {
                     } else {
                         this.m[i][j].circle.setSelected(true);
                     }
+                    pressed = true;
+                }
+            }
+        }
+
+        if ((this.mode == 'Partial') &&
+            (pressed == false)) {
+            for (let i = 0; i < 8; i++) {
+                for (let j = 0; j < 8; j++) {
+                    this.m[i][j].circle.setSelected(false);
                 }
             }
         }
@@ -308,5 +328,65 @@ class Matrix {
                 this.m[i][j].circle.update();
             }
         }
+    }
+
+    flip(dir) {
+        if ((dir != 'lr') && 
+            (dir != 'ud')) {
+            return;
+        }
+
+        let matrixR = new Array(8);
+        let matrixG = new Array(8);
+        let matrixB = new Array(8);
+        let matrixA = new Array(8);    // Anti Diagonal to flip.
+
+        for (let i=0; i<8; i++) {
+            matrixR[i] = new Array(8).fill(0);
+            matrixG[i] = new Array(8).fill(0);
+            matrixB[i] = new Array(8).fill(0);
+            matrixA[i] = new Array(8).fill(0);
+            matrixA[i][7-i] = 1;
+        }
+
+        for (let i=0; i<8; i++) {
+            for (let j=0; j<8; j++) {
+                let tmpR = 0;
+                let tmpG = 0;
+                let tmpB = 0;
+                for (let k=0; k<8; k++) {
+                    if (dir == 'ud') {
+                        /* Flip the matrix based on X axis */
+                        let tmp1 = matrixA[k][j];
+                        let tmp2 = this.m[i][k].circle.getColor();
+                        tmpR += (tmp1 * tmp2[0]);
+                        tmpG += (tmp1 * tmp2[1]);
+                        tmpB += (tmp1 * tmp2[2]);
+                    } else {
+                        /* Flip the matrix based on Y axis */
+                        let tmp1 = this.m[k][j].circle.getColor();
+                        let tmp2 = matrixA[i][k];
+                        tmpR += (tmp1[0] * tmp2);
+                        tmpG += (tmp1[1] * tmp2);
+                        tmpB += (tmp1[2] * tmp2);
+                    }
+                }
+                matrixR[i][j] = tmpR;
+                matrixG[i][j] = tmpG;
+                matrixB[i][j] = tmpB;
+            }
+        }
+
+        for (let i=0; i<8; i++) {
+            for (let j=0; j<8; j++) {
+                this.m[i][j].circle.setColor(
+                    matrixR[i][j],
+                    matrixG[i][j],
+                    matrixB[i][j]
+                );
+            }
+        }
+
+        console.log(matrixA)
     }
 }

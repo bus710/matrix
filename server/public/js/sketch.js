@@ -207,9 +207,21 @@ document.addEventListener('btnSinglePressed', function(e){
 });
 
 document.addEventListener('btnFlipXPressed', function(e){
+    matrix.flip('ud');
+    matrix.setMode('None');
+    btnAll.setNormal();
+    btnPartial.setNormal();
+    btnSingle.setNormal();
+    matrix.checkSelectedCircle(0, 0)
 });
 
 document.addEventListener('btnFlipYPressed', function(e){
+    matrix.flip('lr');
+    matrix.setMode('None');
+    btnAll.setNormal();
+    btnPartial.setNormal();
+    btnSingle.setNormal();
+    matrix.checkSelectedCircle(0, 0)
 });
 
 document.addEventListener('btnTurnLPressed', function(e){
