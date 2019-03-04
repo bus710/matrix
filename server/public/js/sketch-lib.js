@@ -411,23 +411,43 @@ class Matrix {
             let end = index[j][1]
 
             for (let i = start; i < end; i++) {
-                tmp = this.m[i][start].circle.getColor();
-                this.m[i][start].circle.setColor(
-                    this.m[end][i].circle.getColor()[0],
-                    this.m[end][i].circle.getColor()[1],
-                    this.m[end][i].circle.getColor()[2]);
-                this.m[end][i].circle.setColor(
-                    this.m[boundary - i][end].circle.getColor()[0],
-                    this.m[boundary - i][end].circle.getColor()[1],
-                    this.m[boundary - i][end].circle.getColor()[2]);
-                this.m[boundary - i][end].circle.setColor(
-                    this.m[start][boundary - i].circle.getColor()[0],
-                    this.m[start][boundary - i].circle.getColor()[1],
-                    this.m[start][boundary - i].circle.getColor()[2]);
-                this.m[start][boundary - i].circle.setColor(
-                    tmp[0],
-                    tmp[1],
-                    tmp[2]);
+                if (dir == 'left') {
+                    tmp = this.m[i][start].circle.getColor();
+                    this.m[i][start].circle.setColor(
+                        this.m[end][i].circle.getColor()[0],
+                        this.m[end][i].circle.getColor()[1],
+                        this.m[end][i].circle.getColor()[2]);
+                    this.m[end][i].circle.setColor(
+                        this.m[boundary - i][end].circle.getColor()[0],
+                        this.m[boundary - i][end].circle.getColor()[1],
+                        this.m[boundary - i][end].circle.getColor()[2]);
+                    this.m[boundary - i][end].circle.setColor(
+                        this.m[start][boundary - i].circle.getColor()[0],
+                        this.m[start][boundary - i].circle.getColor()[1],
+                        this.m[start][boundary - i].circle.getColor()[2]);
+                    this.m[start][boundary - i].circle.setColor(
+                        tmp[0],
+                        tmp[1],
+                        tmp[2]);
+                } else {
+                    tmp = this.m[i][start].circle.getColor();
+                    this.m[i][start].circle.setColor(
+                        this.m[start][boundary - i].circle.getColor()[0],
+                        this.m[start][boundary - i].circle.getColor()[1],
+                        this.m[start][boundary - i].circle.getColor()[2]);
+                    this.m[start][boundary - i].circle.setColor(
+                        this.m[boundary - i][end].circle.getColor()[0],
+                        this.m[boundary - i][end].circle.getColor()[1],
+                        this.m[boundary - i][end].circle.getColor()[2]);
+                    this.m[boundary - i][end].circle.setColor(
+                        this.m[end][i].circle.getColor()[0],
+                        this.m[end][i].circle.getColor()[1],
+                        this.m[end][i].circle.getColor()[2]);
+                    this.m[end][i].circle.setColor(
+                        tmp[0],
+                        tmp[1],
+                        tmp[2]);
+                }
             }
         }
 
