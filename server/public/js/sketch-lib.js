@@ -396,105 +396,116 @@ class Matrix {
             return;
         }
 
+        let boundary = 7;
         let tmp = [];
-        // for (let j = 7; j > 3; j--) {
-        //     console.log(j)
-        //     for (let i = 7 - j; i < j; i++) {
-        //         tmp = this.m[i][7 - i].circle.getColor();
-        //         this.m[i][7 - i].circle.setColor(
-        //             this.m[j][i].circle.getColor()[0],
-        //             this.m[j][i].circle.getColor()[1],
-        //             this.m[j][i].circle.getColor()[2]);
-        //         this.m[j][i].circle.setColor(
-        //             this.m[7 - i][j].circle.getColor()[0],
-        //             this.m[7 - i][j].circle.getColor()[1],
-        //             this.m[7 - i][j].circle.getColor()[2]);
-        //         this.m[7 - i][j].circle.setColor(
-        //             this.m[7 - j][7 - i].circle.getColor()[0],
-        //             this.m[7 - j][7 - i].circle.getColor()[1],
-        //             this.m[7 - j][7 - i].circle.getColor()[2]);
-        //         this.m[7 - j][7 - i].circle.setColor(
-        //             tmp[0],
-        //             tmp[1],
-        //             tmp[2]);
-        //     }
+        let index = [
+            [0, 7],
+            [1, 6],
+            [2, 5],
+            [3, 4]
+        ];
+
+        for (let j = 0; j < 4; j++) {
+
+            let start = index[j][0];
+            let end = index[j][1]
+
+            for (let i = start; i < end; i++) {
+                tmp = this.m[i][start].circle.getColor();
+                this.m[i][start].circle.setColor(
+                    this.m[end][i].circle.getColor()[0],
+                    this.m[end][i].circle.getColor()[1],
+                    this.m[end][i].circle.getColor()[2]);
+                this.m[end][i].circle.setColor(
+                    this.m[boundary - i][end].circle.getColor()[0],
+                    this.m[boundary - i][end].circle.getColor()[1],
+                    this.m[boundary - i][end].circle.getColor()[2]);
+                this.m[boundary - i][end].circle.setColor(
+                    this.m[start][boundary - i].circle.getColor()[0],
+                    this.m[start][boundary - i].circle.getColor()[1],
+                    this.m[start][boundary - i].circle.getColor()[2]);
+                this.m[start][boundary - i].circle.setColor(
+                    tmp[0],
+                    tmp[1],
+                    tmp[2]);
+            }
+        }
+
+        // for (let i = 0; i < 7; i++) {
+        //     tmp = this.m[i][0].circle.getColor();
+        //     this.m[i][0].circle.setColor(
+        //         this.m[7][i].circle.getColor()[0],
+        //         this.m[7][i].circle.getColor()[1],
+        //         this.m[7][i].circle.getColor()[2]);
+        //     this.m[7][i].circle.setColor(
+        //         this.m[7 - i][7].circle.getColor()[0],
+        //         this.m[7 - i][7].circle.getColor()[1],
+        //         this.m[7 - i][7].circle.getColor()[2]);
+        //     this.m[7 - i][7].circle.setColor(
+        //         this.m[0][7 - i].circle.getColor()[0],
+        //         this.m[0][7 - i].circle.getColor()[1],
+        //         this.m[0][7 - i].circle.getColor()[2]);
+        //     this.m[0][7 - i].circle.setColor(
+        //         tmp[0],
+        //         tmp[1],
+        //         tmp[2]);
+        // }
+        // for (let i = 1; i < 6; i++) {
+        //     tmp = this.m[i][1].circle.getColor();
+        //     this.m[i][1].circle.setColor(
+        //         this.m[6][i].circle.getColor()[0],
+        //         this.m[6][i].circle.getColor()[1],
+        //         this.m[6][i].circle.getColor()[2]);
+        //     this.m[6][i].circle.setColor(
+        //         this.m[7 - i][6].circle.getColor()[0],
+        //         this.m[7 - i][6].circle.getColor()[1],
+        //         this.m[7 - i][6].circle.getColor()[2]);
+        //     this.m[7 - i][6].circle.setColor(
+        //         this.m[1][7 - i].circle.getColor()[0],
+        //         this.m[1][7 - i].circle.getColor()[1],
+        //         this.m[1][7 - i].circle.getColor()[2]);
+        //     this.m[1][7 - i].circle.setColor(
+        //         tmp[0],
+        //         tmp[1],
+        //         tmp[2]);
+        // }
+        // for (let i = 2; i < 5; i++) {
+        //     tmp = this.m[i][2].circle.getColor();
+        //     this.m[i][2].circle.setColor(
+        //         this.m[5][i].circle.getColor()[0],
+        //         this.m[5][i].circle.getColor()[1],
+        //         this.m[5][i].circle.getColor()[2]);
+        //     this.m[5][i].circle.setColor(
+        //         this.m[7 - i][5].circle.getColor()[0],
+        //         this.m[7 - i][5].circle.getColor()[1],
+        //         this.m[7 - i][5].circle.getColor()[2]);
+        //     this.m[7 - i][5].circle.setColor(
+        //         this.m[2][7 - i].circle.getColor()[0],
+        //         this.m[2][7 - i].circle.getColor()[1],
+        //         this.m[2][7 - i].circle.getColor()[2]);
+        //     this.m[2][7 - i].circle.setColor(
+        //         tmp[0],
+        //         tmp[1],
+        //         tmp[2]);
         // }
 
-        for (let i = 0; i < 7; i++) {
-            tmp = this.m[i][0].circle.getColor();
-            this.m[i][0].circle.setColor(
-                this.m[7][i].circle.getColor()[0],
-                this.m[7][i].circle.getColor()[1],
-                this.m[7][i].circle.getColor()[2]);
-            this.m[7][i].circle.setColor(
-                this.m[7 - i][7].circle.getColor()[0],
-                this.m[7 - i][7].circle.getColor()[1],
-                this.m[7 - i][7].circle.getColor()[2]);
-            this.m[7 - i][7].circle.setColor(
-                this.m[0][7 - i].circle.getColor()[0],
-                this.m[0][7 - i].circle.getColor()[1],
-                this.m[0][7 - i].circle.getColor()[2]);
-            this.m[0][7 - i].circle.setColor(
-                tmp[0],
-                tmp[1],
-                tmp[2]);
-        }
-        for (let i = 1; i < 6; i++) {
-            tmp = this.m[i][1].circle.getColor();
-            this.m[i][1].circle.setColor(
-                this.m[6][i].circle.getColor()[0],
-                this.m[6][i].circle.getColor()[1],
-                this.m[6][i].circle.getColor()[2]);
-            this.m[6][i].circle.setColor(
-                this.m[7 - i][6].circle.getColor()[0],
-                this.m[7 - i][6].circle.getColor()[1],
-                this.m[7 - i][6].circle.getColor()[2]);
-            this.m[7 - i][6].circle.setColor(
-                this.m[1][7 - i].circle.getColor()[0],
-                this.m[1][7 - i].circle.getColor()[1],
-                this.m[1][7 - i].circle.getColor()[2]);
-            this.m[1][7 - i].circle.setColor(
-                tmp[0],
-                tmp[1],
-                tmp[2]);
-        }
-        for (let i = 2; i < 5; i++) {
-            tmp = this.m[i][2].circle.getColor();
-            this.m[i][2].circle.setColor(
-                this.m[5][i].circle.getColor()[0],
-                this.m[5][i].circle.getColor()[1],
-                this.m[5][i].circle.getColor()[2]);
-            this.m[5][i].circle.setColor(
-                this.m[7 - i][5].circle.getColor()[0],
-                this.m[7 - i][5].circle.getColor()[1],
-                this.m[7 - i][5].circle.getColor()[2]);
-            this.m[7 - i][5].circle.setColor(
-                this.m[2][7 - i].circle.getColor()[0],
-                this.m[2][7 - i].circle.getColor()[1],
-                this.m[2][7 - i].circle.getColor()[2]);
-            this.m[2][7 - i].circle.setColor(
-                tmp[0],
-                tmp[1],
-                tmp[2]);
-        }
-
-        tmp = this.m[3][3].circle.getColor();
-        this.m[3][3].circle.setColor(
-            this.m[4][3].circle.getColor()[0],
-            this.m[4][3].circle.getColor()[1],
-            this.m[4][3].circle.getColor()[2]);
-        this.m[4][3].circle.setColor(
-            this.m[4][4].circle.getColor()[0],
-            this.m[4][4].circle.getColor()[1],
-            this.m[4][4].circle.getColor()[2]);
-        this.m[4][4].circle.setColor(
-            this.m[3][4].circle.getColor()[0],
-            this.m[3][4].circle.getColor()[1],
-            this.m[3][4].circle.getColor()[2]);
-        this.m[3][4].circle.setColor(
-            tmp[0],
-            tmp[1],
-            tmp[2]);
+        // tmp = this.m[3][3].circle.getColor();
+        // this.m[3][3].circle.setColor(
+        //     this.m[4][3].circle.getColor()[0],
+        //     this.m[4][3].circle.getColor()[1],
+        //     this.m[4][3].circle.getColor()[2]);
+        // this.m[4][3].circle.setColor(
+        //     this.m[4][4].circle.getColor()[0],
+        //     this.m[4][4].circle.getColor()[1],
+        //     this.m[4][4].circle.getColor()[2]);
+        // this.m[4][4].circle.setColor(
+        //     this.m[3][4].circle.getColor()[0],
+        //     this.m[3][4].circle.getColor()[1],
+        //     this.m[3][4].circle.getColor()[2]);
+        // this.m[3][4].circle.setColor(
+        //     tmp[0],
+        //     tmp[1],
+        //     tmp[2]);
 
     }
 }
