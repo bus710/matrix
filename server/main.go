@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -62,9 +61,10 @@ func PostItem(w http.ResponseWriter, r *http.Request) {
 	// log.Println(matrix.Meta)
 	// log.Println(matrixData)
 
-	var m interface{}
-	_ = json.NewDecoder(r.Body).Decode(&m)
-	fmt.Println(m)
+	/* Workaroud when the struct is not known */
+	// var m interface{}
+	// _ = json.NewDecoder(r.Body).Decode(&m)
+	// fmt.Println(m)
 
 	json.NewEncoder(w).Encode(item)
 }
