@@ -69,8 +69,8 @@ func PostItem(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewDecoder(r.Body).Decode(&matrix)
 
 	matrixR64 := gjson.Get(matrix.R64, "r64").Array()
-	matrixG64 := gjson.Get(matrix.G64, "g64")
-	matrixB64 := gjson.Get(matrix.B64, "b64")
+	matrixG64 := gjson.Get(matrix.G64, "g64").Array()
+	matrixB64 := gjson.Get(matrix.B64, "b64").Array()
 
 	log.Println(matrix.Meta)
 	log.Println(matrixR64) // try matrixR64[0].Num
