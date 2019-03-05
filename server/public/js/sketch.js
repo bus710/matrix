@@ -272,16 +272,18 @@ document.addEventListener('btnApplyPressed', function(e){
 
     console.log(matrixCurrentState)
 
+    axios.post('/api', matrixCurrentState)
+        .then(function (response) {
+            console.log(`POST's result: ${response.statusText}`);  // template literal
+        })
+        .catch(function (error) {
+            console.log(`POST's result: ${error}`);
+    });
+
+    /* Just in case WebSocket connection is needed. */
     // webSocket.send(
     //     JSON.stringify({message: "hello server!"}))
 
-    axios.post('/api', matrixCurrentState)
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-    });
 });
 
 document.addEventListener('sliderRChanged', function(e){

@@ -264,15 +264,27 @@ class Matrix {
     getAllColor() {
         let allColor = {
             meta: 'matrixCurrentState',
-            data: new Array(8).fill(0)
+            r64: '',
+            b64: '',
+            g64: '',
         };
+        let r64 = new Array(64).fill(0);
+        let g64 = new Array(64).fill(0);
+        let b64 = new Array(64).fill(0);
 
+        let k = 0;
         for (let i = 0; i < 8; i++) {
-            allColor.data[i] = new Array(8).fill(0); 
             for (let j = 0; j < 8; j++) {
-                allColor.data[i][j] = this.m[i][j].circle.getColor();
+                let tmp = this.m[i][j].circle.getColor();
+                r64[k] = tmp[0];
+                g64[k] = tmp[1];
+                b64[k] = tmp[2];
+                k ++;
             }
         }
+        allColor.r64 = '{"r64":' + JSON.stringify(r64) + '}';
+        allColor.g64 = '{"g64":' + JSON.stringify(g64) + '}';
+        allColor.b64 = '{"b64":' + JSON.stringify(b64) + '}';
         return allColor;
     }
 
