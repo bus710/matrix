@@ -150,22 +150,13 @@ class Circle {
     }
 
     setColor(r, g, b) {
-        if ((r == 0) && (g == 0) && (b == 0)) {
-            this.r = 255;
-            this.g = 255;
-            this.b = 255;
-        } else {
-            this.r = r;
-            this.g = g;
-            this.b = b;
-        }
+        this.r = r;
+        this.g = g;
+        this.b = b;
         this.a = 255
     }
 
     getColor() {
-        this.r = this.r == 255 ? 0 : this.r;
-        this.g = this.g == 255 ? 0 : this.g;
-        this.b = this.b == 255 ? 0 : this.b;
         return [this.r, this.g, this.b];
     }
 
@@ -219,7 +210,7 @@ class Matrix {
                     circle: new Circle(),
                     location: [i, j]
                 };
-                this.m[i][j].circle.setColor(0, 0, 0);
+                this.m[i][j].circle.setColor(250, 250, 250);
             }
         }
     }
@@ -268,6 +259,21 @@ class Matrix {
         this.r = r;
         this.g = g;
         this.b = b;
+    }
+
+    getAllColor() {
+        let allColor = {
+            meta: 'matrixCurrentState',
+            data: new Array(8).fill(0)
+        };
+
+        for (let i = 0; i < 8; i++) {
+            allColor.data[i] = new Array(8).fill(0); 
+            for (let j = 0; j < 8; j++) {
+                allColor.data[i][j] = this.m[i][j].circle.getColor();
+            }
+        }
+        return allColor;
     }
 
     checkSelectedCircle(x, y) {

@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -14,6 +15,12 @@ import (
 type Item struct {
 	ID      string `json:"id,omitempty"`
 	Content string `json:"content,omitempty"`
+}
+
+// Matrix ...
+type Matrix struct {
+	Meta string `json:"meta"`
+	Data []byte `json:"data"`
 }
 
 var item []Item
@@ -47,6 +54,18 @@ func GetItem(w http.ResponseWriter, r *http.Request) {
 // PostItem ...
 func PostItem(w http.ResponseWriter, r *http.Request) {
 	log.Println("POST is requested")
+
+	// var matrix Matrix
+	// _ = json.NewDecoder(r.Body).Decode(&matrix)
+	// var matrixData []byte
+	// json.Unmarshal([]byte(matrix.Data), &matrixData)
+	// log.Println(matrix.Meta)
+	// log.Println(matrixData)
+
+	var m interface{}
+	_ = json.NewDecoder(r.Body).Decode(&m)
+	fmt.Println(m)
+
 	json.NewEncoder(w).Encode(item)
 }
 

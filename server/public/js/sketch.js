@@ -1,36 +1,34 @@
 /* To test this sketch in mobile Chrome,
-    please use the secret tab, which doesn't have cache
+    please use the secret tab, which doesn't allow the cache
     so that we can immediately see the updated sketch. */
 
+/* WebSocket */
 const serverIP = location.hostname
 const webSocket = new WebSocket("ws://" + serverIP + ":8080/message");
 
+/* Location delimiter */
 let yMatrix;
-let matrix;
-
 let yType;
+let yR, yG, yB;
+let yTurn;
+let yApply;
+let yFlip;
+
+/* GUI components */
+let matrix;
 let btnAll;
 let btnPartial;
 let btnSingle;
-
-let yR, yG, yB;
 let txtR, valR, sliderR;
 let txtG, valG, sliderG;
 let txtB, valB, sliderB;
-
-let yFlip;
 let btnFlipX;
 let btnFlipY;
-
-let yTurn;
 let btnTurnL;
 let btnTurnR;
-
-let yApply;
 let btnApply;
 
-let drawCnt = 0;
-
+/* Events */
 let eBtnAll = new Event('btnAllPressed');
 let eBtnPartial = new Event('btnPartialPressed');
 let eBtnSingle = new Event('btnSinglePressed');
@@ -39,22 +37,25 @@ let eBtnFlipY = new Event('btnFlipYPressed');
 let eBtnTurnL = new Event('btnTurnLPressed');
 let eBtnTurnR = new Event('btnTurnRPressed');
 let eBtnApply = new Event('btnApplyPressed');
-
 let eSliderR = new Event('sliderRChanged');
 let eSliderG = new Event('sliderGChanged');
 let eSliderB = new Event('sliderBChanged');
 
-/* ============================== */
+/* variables for the draw handler */
+let drawCnt = 0;
+
+/* P5.js reserved fuctions
+    - setup
+    - draw
+    - mouseClicked
+    - windowResized */
+
 function setup() {
     // createCanvas(displayWidth, displayHeight)
     createCanvas(displayWidth, displayWidth*1.6)
 
     /* ============================== */
     yMatrix = 30;
-
-    // c = new Circle();
-    // c.position(70, 50);
-    // c.defaultColor(255, 255, 255);
 
     matrix = new Matrix();
     matrix.setPosition(80, yMatrix);
@@ -82,12 +83,12 @@ function setup() {
     txtR.setPosition(60, yR);
     txtR.setNormal();
 
-    valR = new P("0");
+    valR = new P("250");
     valR.setPosition(130, yR);
     valR.setNormal();
 
     sliderR = new Slider();
-    sliderR.setRange(0, 255, 0, 10);
+    sliderR.setRange(0, 255, 250, 10);    // Min, Max, Init, Step
     sliderR.setPosition(215, yR+15);
     sliderR.setEvent(eSliderR);
 
@@ -97,12 +98,12 @@ function setup() {
     txtG.setPosition(60, yG);
     txtG.setNormal();
 
-    valG = new P("0");
+    valG = new P("250");
     valG.setPosition(130, yG);
     valG.setNormal();
 
     sliderG = new Slider();
-    sliderG.setRange(0, 255, 0, 10);
+    sliderG.setRange(0, 255, 250, 10);
     sliderG.setPosition(215, yG+15);
     sliderG.setEvent(eSliderG);
 
@@ -112,12 +113,12 @@ function setup() {
     txtB.setPosition(60, yB);
     txtB.setNormal();
 
-    valB = new P("0");
+    valB = new P("250");
     valB.setPosition(130, yB);
     valB.setNormal();
 
     sliderB = new Slider();
-    sliderB.setRange(0, 255, 0, 10);
+    sliderB.setRange(0, 255, 250, 10);
     sliderB.setPosition(215, yB+15);
     sliderB.setEvent(eSliderB);
 
@@ -199,9 +200,9 @@ function windowResized() {
 
 /* Event Handlers =========================== */
 document.addEventListener('btnAllPressed', function(e){
-    sliderR.setValue(0);
-    sliderG.setValue(0);
-    sliderB.setValue(0);
+    sliderR.setValue(250);
+    sliderG.setValue(250);
+    sliderB.setValue(250);
     slidersUpdated();
     matrix.update();
     matrix.setMode('All');
@@ -261,9 +262,20 @@ document.addEventListener('btnTurnRPressed', function(e){
 });
 
 document.addEventListener('btnApplyPressed', function(e){
-    webSocket.send(
-        JSON.stringify({message: "hello server!"}))
-    axios.get('/api')
+    let matrixCurrentState = matrix.getAllColor();
+
+    try {
+        JSON.parse(JSON.stringify(matrixCurrentState));
+    } catch (e) {
+        console.log('JSON format violation!');
+    }
+
+    console.log(matrixCurrentState)
+
+    // webSocket.send(
+    //     JSON.stringify({message: "hello server!"}))
+
+    axios.post('/api', matrixCurrentState)
         .then(function (response) {
             console.log(response);
         })
