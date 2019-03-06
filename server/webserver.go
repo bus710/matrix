@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/tidwall/gjson"
 	"golang.org/x/net/websocket"
 )
@@ -23,7 +24,30 @@ type Matrix struct {
 	B64  string `json:"b64,omitempty"`
 }
 
+type webserver struct {
+}
+
 var item []Item
+
+func (s *webserver) init() {
+	item = append(item, Item{ID: "1", Content: "1"})
+	item = append(item, Item{ID: "2", Content: "2"})
+}
+
+func (s *webserver) run() {
+	// Rest APIs
+	router := mux.NewRouter()
+	router.HandleFunc("/api", GetItem).Methods("GET")
+	router.HandleFunc("/api", PostItem).Methods("POST")
+	http.Handle("/api", router)
+
+	// WebSocket
+	http.Handle("/message", websocket.Handler(socket))
+
+	// Web Contents
+	http.Handle("/", http.FileServer(http.Dir("./public")))
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
 
 // GetItem ...
 func GetItem(w http.ResponseWriter, r *http.Request) {
