@@ -10,19 +10,25 @@ import (
 	"golang.org/x/net/websocket"
 )
 
-type webserver struct {
-	instance *http.Server
+type webServer struct {
+	instance       *http.Server
+	responseItem   *Item
+	receivedItemWS *Message
+	responseItemWS *Message
 }
 
-// Item ...
+// Item - This can be used for the REST API response to the clients
 type Item struct {
 	ID      string `json:"id,omitempty"`
 	Content string `json:"content,omitempty"`
 }
 
-var item []Item
+// Message - This can be used for the websocket response to the clients
+type Message struct {
+	Message string `json:"message"`
+}
 
-// Matrix ...
+// Matrix - This can be used to store the incoming RGB matrix value
 type Matrix struct {
 	Meta string `json:"meta,omitempty"`
 	R64  string `json:"r64,omitempty"`
@@ -30,22 +36,23 @@ type Matrix struct {
 	B64  string `json:"b64,omitempty"`
 }
 
-func (s *webserver) init() {
+func (s *webServer) init() {
+	item := make([]Item, 0)
 	item = append(item, Item{ID: "1", Content: "1"})
 	item = append(item, Item{ID: "2", Content: "2"})
 
 	s.instance = &http.Server{Addr: ":8080"}
 }
 
-func (s *webserver) run() {
+func (s *webServer) run() {
 	// Rest APIs
 	router := mux.NewRouter()
-	router.HandleFunc("/api", GetItem).Methods("GET")
-	router.HandleFunc("/api", PostItem).Methods("POST")
+	router.HandleFunc("/api", s.GetItem).Methods("GET")
+	router.HandleFunc("/api", s.PostItem).Methods("POST")
 	http.Handle("/api", router)
 
 	// WebSocket
-	http.Handle("/message", websocket.Handler(socket))
+	http.Handle("/message", websocket.Handler(s.socket))
 
 	// Web Contents
 	http.Handle("/", http.FileServer(http.Dir("./public")))
@@ -53,13 +60,13 @@ func (s *webserver) run() {
 }
 
 // GetItem ...
-func GetItem(w http.ResponseWriter, r *http.Request) {
+func (s *webServer) GetItem(w http.ResponseWriter, r *http.Request) {
 	log.Println("GET is requested")
-	json.NewEncoder(w).Encode(item)
+	json.NewEncoder(w).Encode(s.responseItem)
 }
 
 // PostItem ...
-func PostItem(w http.ResponseWriter, r *http.Request) {
+func (s *webServer) PostItem(w http.ResponseWriter, r *http.Request) {
 	log.Println("POST is requested")
 
 	var matrix Matrix
@@ -82,33 +89,29 @@ func PostItem(w http.ResponseWriter, r *http.Request) {
 	log.Println(matrixG64)
 	log.Println(matrixB64)
 
-	json.NewEncoder(w).Encode(item)
+	json.NewEncoder(w).Encode(s.responseItem)
 }
 
 /* ========================================= */
 
-type message struct {
-	Message string `json:"message"`
-}
-
-func socket(ws *websocket.Conn) {
+func (s *webServer) socket(ws *websocket.Conn) {
 	log.Println(ws.Request().RemoteAddr)
 
 	defer ws.Close()
 
 	for {
-		var m message
+		s.receivedItemWS = &Message{}
 		// receive a message using the codec
-		if err := websocket.JSON.Receive(ws, &m); err != nil {
+		if err := websocket.JSON.Receive(ws, &s.receivedItemWS); err != nil {
 			log.Println(err)
 			break
 		}
 
-		log.Println("Received message:", m.Message)
+		log.Println("Received message:", s.receivedItemWS)
 
 		// send a response
-		m2 := message{"Thanks for the message!"}
-		if err := websocket.JSON.Send(ws, m2); err != nil {
+		s.responseItemWS = &Message{"Thanks for the message!"}
+		if err := websocket.JSON.Send(ws, s.responseItemWS); err != nil {
 			log.Println(err)
 			break
 		}

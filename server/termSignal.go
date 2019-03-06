@@ -12,13 +12,13 @@ import (
 
 type termSignal struct {
 	wait    *sync.WaitGroup
-	server  *webserver
+	server  *webServer
 	sigterm chan os.Signal
 }
 
 // This function takes a WG, instance of service, and channels of go routines
 // and keeps the assigned params in its struct to access later.
-func (sig *termSignal) init(wait *sync.WaitGroup, serverInstance *webserver) {
+func (sig *termSignal) init(wait *sync.WaitGroup, serverInstance *webServer) {
 	sig.wait = wait
 	sig.server = serverInstance
 }

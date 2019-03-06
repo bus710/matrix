@@ -18,7 +18,7 @@ func main() {
 
 	// Declaring each struct
 	waitInstance := sync.WaitGroup{}
-	serverInstance := webserver{}
+	serverInstance := webServer{}
 	signalInstance := termSignal{}
 
 	// Initializing each module
