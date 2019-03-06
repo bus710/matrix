@@ -20,14 +20,18 @@ func main() {
 	waitInstance := sync.WaitGroup{}
 	serverInstance := webServer{}
 	signalInstance := termSignal{}
+	sensorHatInstance := sensorHat{}
 
 	// Initializing each module
 	serverInstance.init()
-	signalInstance.init(&waitInstance, &serverInstance)
+	sensorHatInstance.init(&waitInstance)
+	signalInstance.init(&waitInstance, &serverInstance, &sensorHatInstance)
 
 	// Increasing the wait group and starting each go routine
 	waitInstance.Add(1)
 	go signalInstance.catcher()
+	waitInstance.Add(1)
+	go sensorHatInstance.run()
 
 	// Running the webserver
 	serverInstance.run()
