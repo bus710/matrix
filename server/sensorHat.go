@@ -6,12 +6,14 @@ import (
 	"time"
 )
 
+// The main struc of this module
 type sensorHat struct {
 	wait          *sync.WaitGroup
 	chanStop      chan bool
 	chanDataReady chan bool
 }
 
+// init - assigns data and channels
 func (sh *sensorHat) init(wait *sync.WaitGroup) {
 	log.Println()
 	sh.chanStop = make(chan bool, 1)
@@ -19,6 +21,7 @@ func (sh *sensorHat) init(wait *sync.WaitGroup) {
 	sh.wait = wait
 }
 
+// run - runs the main go routine
 func (sh *sensorHat) run() {
 	tick := time.Tick(1000 * time.Millisecond)
 
