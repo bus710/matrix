@@ -10,11 +10,17 @@ import (
 	"golang.org/x/net/websocket"
 )
 
+type webserver struct {
+	instance *http.Server
+}
+
 // Item ...
 type Item struct {
 	ID      string `json:"id,omitempty"`
 	Content string `json:"content,omitempty"`
 }
+
+var item []Item
 
 // Matrix ...
 type Matrix struct {
@@ -23,12 +29,6 @@ type Matrix struct {
 	G64  string `json:"g64,omitempty"`
 	B64  string `json:"b64,omitempty"`
 }
-
-type webserver struct {
-	instance *http.Server
-}
-
-var item []Item
 
 func (s *webserver) init() {
 	item = append(item, Item{ID: "1", Content: "1"})
@@ -49,7 +49,7 @@ func (s *webserver) run() {
 
 	// Web Contents
 	http.Handle("/", http.FileServer(http.Dir("./public")))
-	log.Fatal(s.instance.ListenAndServe())
+	s.instance.ListenAndServe()
 }
 
 // GetItem ...

@@ -33,6 +33,7 @@ func (sig *termSignal) catcher() {
 
 	// Declaring a function that can be used running a graceful shutdown.
 	cleanup := func() {
+		log.Println("Start of the cleanup")
 		ctx, cancel := context.WithTimeout(
 			context.Background(), time.Millisecond*3000)
 		defer cancel()
@@ -40,12 +41,15 @@ func (sig *termSignal) catcher() {
 			log.Println(err)
 		}
 		sig.wait.Done()
+
+		log.Println("End of the cleanup")
 	}
 
 	// The routine waits here for the keyboard interrupt.
 	select {
 	case received := <-sig.sigterm:
-		log.Println("\n>>", received)
+		log.Println()
+		log.Println("Received a CTRL+C", received)
 		cleanup()
 	}
 }
