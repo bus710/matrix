@@ -59,6 +59,7 @@ function setup() {
 
     matrix = new Matrix();
     matrix.setPosition(80, yMatrix);
+    matrix.setMode('All')
 
     /* ============================== */
     yType = 320;
