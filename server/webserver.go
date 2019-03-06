@@ -19,6 +19,7 @@ type webServer struct {
 }
 
 // Item - can be used for the REST API response to the clients
+// This is not really used in this example but for future usage.
 type Item struct {
 	ID      string `json:"id,omitempty"`
 	Content string `json:"content,omitempty"`
@@ -59,7 +60,7 @@ func (s *webServer) run() {
 
 	// Web Contents
 	http.Handle("/", http.FileServer(http.Dir("./public")))
-	s.instance.ListenAndServe()
+	log.Println(s.instance.ListenAndServe())
 }
 
 // GetItem ...
@@ -109,7 +110,7 @@ func (s *webServer) socket(ws *websocket.Conn) {
 			break
 		}
 
-		log.Println("Received message:", s.receivedItemWS)
+		log.Println("Received message:", s.receivedItemWS.Message)
 
 		// send a response
 		s.responseItemWS = &Message{"Thanks for the message!"}
@@ -119,5 +120,3 @@ func (s *webServer) socket(ws *websocket.Conn) {
 		}
 	}
 }
-
-/* ========================================= */

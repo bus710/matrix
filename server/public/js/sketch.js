@@ -320,5 +320,5 @@ webSocket.onopen = function () {
 };
 
 webSocket.onmessage = function (e) {
-    console.log('got a WS message: ' + e.data);
+    console.log('got a WS message: ' + JSON.parse(e.data).message);
 };
