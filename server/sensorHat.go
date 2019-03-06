@@ -26,6 +26,8 @@ StopFlag:
 	for {
 		select {
 		case <-sh.chanStop:
+			// To shutdown gracefully.
+			// Some cleaning action can be added here.
 			log.Println("got a signal from the chanStop")
 			break StopFlag
 		case <-sh.chanDataReady:
