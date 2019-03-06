@@ -10,20 +10,21 @@ import (
 	"time"
 )
 
+// termSignal - the main struct of this module
 type termSignal struct {
 	wait    *sync.WaitGroup
 	server  *webServer
 	sigterm chan os.Signal
 }
 
-// This function takes a WG, instance of service, and channels of go routines
+// init - takes a WG, instance of service, and channels of go routines
 // and keeps the assigned params in its struct to access later.
 func (sig *termSignal) init(wait *sync.WaitGroup, serverInstance *webServer) {
 	sig.wait = wait
 	sig.server = serverInstance
 }
 
-// This is a handler to catch the interrupts from keyboard (CTRL+C)
+// catcher - a handler to catch the interrupts from keyboard (CTRL+C)
 // and gracefully shuts down.
 func (sig *termSignal) catcher() {
 	// Storing the unbuffered channel in its struct.

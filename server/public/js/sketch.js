@@ -285,8 +285,9 @@ document.addEventListener('btnApplyPressed', function(e){
     });
 
     /* Just in case WebSocket connection is needed. */
-    // webSocket.send(
-    //     JSON.stringify({message: "hello server!"}))
+    console.log("sent a WS message");
+    webSocket.send(
+        JSON.stringify({message: "hello server!"}))
 
 });
 
@@ -319,5 +320,5 @@ webSocket.onopen = function () {
 };
 
 webSocket.onmessage = function (e) {
-    console.log('got a message: ' + e.data);
+    console.log('got a WS message: ' + e.data);
 };

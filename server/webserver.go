@@ -10,6 +10,7 @@ import (
 	"golang.org/x/net/websocket"
 )
 
+// webServer - the main struct of this module
 type webServer struct {
 	instance       *http.Server
 	responseItem   *Item
@@ -17,18 +18,18 @@ type webServer struct {
 	responseItemWS *Message
 }
 
-// Item - This can be used for the REST API response to the clients
+// Item - can be used for the REST API response to the clients
 type Item struct {
 	ID      string `json:"id,omitempty"`
 	Content string `json:"content,omitempty"`
 }
 
-// Message - This can be used for the websocket response to the clients
+// Message - can be used for the websocket response to the clients
 type Message struct {
 	Message string `json:"message"`
 }
 
-// Matrix - This can be used to store the incoming RGB matrix value
+// Matrix - can be used to store the incoming RGB matrix value
 type Matrix struct {
 	Meta string `json:"meta,omitempty"`
 	R64  string `json:"r64,omitempty"`
@@ -36,6 +37,7 @@ type Matrix struct {
 	B64  string `json:"b64,omitempty"`
 }
 
+// init - initializes the data and structs
 func (s *webServer) init() {
 	item := make([]Item, 0)
 	item = append(item, Item{ID: "1", Content: "1"})
@@ -44,6 +46,7 @@ func (s *webServer) init() {
 	s.instance = &http.Server{Addr: ":8080"}
 }
 
+// run - delivers the static web files and serves the REST API (+ websocket)
 func (s *webServer) run() {
 	// Rest APIs
 	router := mux.NewRouter()
@@ -92,8 +95,7 @@ func (s *webServer) PostItem(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(s.responseItem)
 }
 
-/* ========================================= */
-
+// socket - websocket handler
 func (s *webServer) socket(ws *websocket.Conn) {
 	log.Println(ws.Request().RemoteAddr)
 
