@@ -25,6 +25,7 @@ type Matrix struct {
 }
 
 type webserver struct {
+	instance *http.Server
 }
 
 var item []Item
@@ -32,6 +33,8 @@ var item []Item
 func (s *webserver) init() {
 	item = append(item, Item{ID: "1", Content: "1"})
 	item = append(item, Item{ID: "2", Content: "2"})
+
+	s.instance = &http.Server{Addr: ":8080"}
 }
 
 func (s *webserver) run() {
@@ -46,7 +49,7 @@ func (s *webserver) run() {
 
 	// Web Contents
 	http.Handle("/", http.FileServer(http.Dir("./public")))
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(s.instance.ListenAndServe())
 }
 
 // GetItem ...

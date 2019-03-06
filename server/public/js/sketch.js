@@ -149,6 +149,9 @@ function setup() {
     btnApply.setPosition(50, yApply);
     btnApply.setSize(310, 40);
     btnApply.setEvent(eBtnApply);
+
+    /* The eye of dragon ============ */
+    slidersUpdated();
 }
 
 function draw() {
