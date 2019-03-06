@@ -7,13 +7,15 @@ import (
 )
 
 type sensorHat struct {
-	chanStop chan bool
-	wait     *sync.WaitGroup
+	wait          *sync.WaitGroup
+	chanStop      chan bool
+	chanDataReady chan bool
 }
 
 func (sh *sensorHat) init(wait *sync.WaitGroup) {
 	log.Println()
 	sh.chanStop = make(chan bool, 1)
+	sh.chanDataReady = make(chan bool, 1)
 	sh.wait = wait
 }
 
@@ -26,6 +28,8 @@ StopFlag:
 		case <-sh.chanStop:
 			log.Println("got a signal from the chanStop")
 			break StopFlag
+		case <-sh.chanDataReady:
+			log.Println("data ready")
 		case <-tick:
 			log.Println("test from the sensorhat routine")
 		default:

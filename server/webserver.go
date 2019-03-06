@@ -12,10 +12,13 @@ import (
 
 // webServer - the main struct of this module
 type webServer struct {
-	instance       *http.Server
+	instance *http.Server
+	// Items for web interaction
 	responseItem   *Item
 	receivedItemWS *Message
 	responseItemWS *Message
+	// Items for local interaction
+	sensorHat *sensorHat
 }
 
 // Item - can be used for the REST API response to the clients
@@ -39,12 +42,13 @@ type Matrix struct {
 }
 
 // init - initializes the data and structs
-func (s *webServer) init() {
+func (s *webServer) init(sensorHatInstance *sensorHat) {
 	item := make([]Item, 0)
 	item = append(item, Item{ID: "1", Content: "1"})
 	item = append(item, Item{ID: "2", Content: "2"})
 
 	s.instance = &http.Server{Addr: ":8080"}
+	s.sensorHat = sensorHatInstance
 }
 
 // run - delivers the static web files and serves the REST API (+ websocket)
@@ -91,6 +95,9 @@ func (s *webServer) PostItem(w http.ResponseWriter, r *http.Request) {
 	log.Println(matrixR64) // try matrixR64[0].Num
 	log.Println(matrixG64)
 	log.Println(matrixB64)
+
+	// Notifying the data is ready to the sensorHat routine
+	s.sensorHat.chanDataReady <- true
 
 	json.NewEncoder(w).Encode(s.responseItem)
 }

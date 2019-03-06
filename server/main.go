@@ -16,15 +16,15 @@ This project has been developed to have the minimum code snippet to run these:
 func main() {
 	log.Println("Hello, world")
 
-	// Declaring each struct
+	// Declaring each struct and getting the pointers
 	waitInstance := sync.WaitGroup{}
+	sensorHatInstance := sensorHat{}
 	serverInstance := webServer{}
 	signalInstance := termSignal{}
-	sensorHatInstance := sensorHat{}
 
 	// Initializing each module
-	serverInstance.init()
 	sensorHatInstance.init(&waitInstance)
+	serverInstance.init(&sensorHatInstance)
 	signalInstance.init(&waitInstance, &serverInstance, &sensorHatInstance)
 
 	// Increasing the wait group and starting each go routine
