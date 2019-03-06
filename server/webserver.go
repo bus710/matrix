@@ -49,7 +49,8 @@ func (s *webServer) init() {
 
 // run - delivers the static web files and serves the REST API (+ websocket)
 func (s *webServer) run() {
-	// Rest APIs
+
+	// The router and REST APIs
 	router := mux.NewRouter()
 	router.HandleFunc("/api", s.GetItem).Methods("GET")
 	router.HandleFunc("/api", s.PostItem).Methods("POST")
@@ -60,20 +61,18 @@ func (s *webServer) run() {
 
 	// Web Contents
 	http.Handle("/", http.FileServer(http.Dir("./public")))
+
+	// Server up and running
 	log.Println(s.instance.ListenAndServe())
 }
 
-// GetItem ...
-func (s *webServer) GetItem(w http.ResponseWriter, r *http.Request) {
-	log.Println("GET is requested")
-	json.NewEncoder(w).Encode(s.responseItem)
-}
-
-// PostItem ...
+// PostItem - receives a chunk of data from the front-end
+// the data should be stored/shared to a file (eventually DB) and the SensorHat's routine
 func (s *webServer) PostItem(w http.ResponseWriter, r *http.Request) {
 	log.Println("POST is requested")
 
-	var matrix Matrix
+	// Declaring an instance to store the incoming data
+	matrix := Matrix{}
 
 	/* Workaroud when the incoming data's structure is not known */
 	// var m interface{}
@@ -93,6 +92,12 @@ func (s *webServer) PostItem(w http.ResponseWriter, r *http.Request) {
 	log.Println(matrixG64)
 	log.Println(matrixB64)
 
+	json.NewEncoder(w).Encode(s.responseItem)
+}
+
+// GetItem -
+func (s *webServer) GetItem(w http.ResponseWriter, r *http.Request) {
+	log.Println("GET is requested")
 	json.NewEncoder(w).Encode(s.responseItem)
 }
 
