@@ -4,3 +4,7 @@ server/matrix-server
 server/debug
 
 server/matrix
+
+server/matrixARM
+
+server/matrixX64
