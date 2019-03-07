@@ -105,6 +105,15 @@ func (s *webServer) PostItem(w http.ResponseWriter, r *http.Request) {
 	log.Println(matrixG64)
 	log.Println(matrixB64)
 
+	// To copy the incoming data to the buffers of sensorHat
+	if len(matrixB64) == 64 {
+		for i := range matrixR64 {
+			s.sensorHat.bufR[i] = byte(matrixR64[i].Num)
+			s.sensorHat.bufG[i] = byte(matrixG64[i].Num)
+			s.sensorHat.bufB[i] = byte(matrixB64[i].Num)
+		}
+	}
+
 	// To notify the data is ready to the sensorHat routine
 	s.sensorHat.chanDataReady <- true
 

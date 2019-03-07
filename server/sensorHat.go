@@ -68,7 +68,8 @@ func (sh *sensorHat) init(wait *sync.WaitGroup) {
 
 		// To initialize the i2c bus
 		sh.i2cBus = bus
-		sh.i2cDev = i2c.Dev{Bus: sh.i2cBus, Addr: sh.matrixAddr} // To avoid Vet's warning
+		// To avoid Vet's warning, the specific keys are being used here
+		sh.i2cDev = i2c.Dev{Bus: sh.i2cBus, Addr: sh.matrixAddr}
 		sh.i2cCon = &sh.i2cDev
 
 	} else {
