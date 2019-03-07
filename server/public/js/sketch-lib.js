@@ -429,7 +429,7 @@ class Matrix {
             let end = index[j][1]
 
             for (let i = start; i < end; i++) {
-                if (dir == 'left') {
+                if (dir == 'right') {
                     tmp = this.m[i][start].circle.getColor();
                     this.m[i][start].circle.setColor(
                         this.m[end][i].circle.getColor()[0],
