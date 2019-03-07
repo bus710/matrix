@@ -134,9 +134,9 @@ func (sh *sensorHat) display() (err error) {
 	for i := 0; i < 64; i++ {
 		j = int(i/8) * 8
 		j = j + j
-		sh.bufRaw[i+j+1] = sh.bufR[i]
-		sh.bufRaw[i+j+9] = sh.bufG[i]
-		sh.bufRaw[i+j+17] = sh.bufB[i]
+		sh.bufRaw[i+j+1] = sh.bufR[i] / 4
+		sh.bufRaw[i+j+9] = sh.bufG[i] / 4
+		sh.bufRaw[i+j+17] = sh.bufB[i] / 4
 	}
 
 	// Actual writing

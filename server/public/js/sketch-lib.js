@@ -183,10 +183,10 @@ class Circle {
         delete this.e;
         if (this.selected) {
             strokeWeight(3);
-            stroke('black')
+            stroke('white')
         } else {
             strokeWeight(1);
-            stroke('black')
+            stroke('white')
         }
         fill(this.r, this.g, this.b, this.a)
         this.e = ellipse(this.x, this.y, this.h, this.w);
