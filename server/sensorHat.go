@@ -46,7 +46,7 @@ func (sh *sensorHat) init(wait *sync.WaitGroup) {
 	sh.wait = wait
 
 	// To make sure the arch afterwords
-	if strings.Contains(runtime.GOARCH, "ARM") {
+	if strings.Contains(runtime.GOARCH, "arm") {
 		// To check the archteture afterwords
 		sh.isARM = true
 
@@ -71,6 +71,11 @@ func (sh *sensorHat) init(wait *sync.WaitGroup) {
 		// To avoid Vet's warning, the specific keys are being used here
 		sh.i2cDev = i2c.Dev{Bus: sh.i2cBus, Addr: sh.matrixAddr}
 		sh.i2cCon = &sh.i2cDev
+
+		err = sh.display()
+		if err != nil {
+			log.Println("Cannot use the i2c bus")
+		}
 
 	} else {
 		// If the arch is not ARM...
@@ -98,7 +103,10 @@ StopFlag:
 			// When the webserver safely received a chunk of data
 			if sh.isARM {
 				log.Println("data ready")
-
+				err := sh.display()
+				if err != nil {
+					log.Println("error is occurred")
+				}
 			}
 		case <-tick:
 			// To run some task periodically
@@ -110,10 +118,10 @@ StopFlag:
 }
 
 func (sh *sensorHat) display() (err error) {
-	sh.dotIndex++
-	if sh.matrixAddr > 63 {
-		sh.dotIndex = 0
-	}
+	// sh.dotIndex++
+	// if sh.matrixAddr > 63 {
+	// 	sh.dotIndex = 0
+	// }
 	// sh.bufR[sh.dotIndex] = 0x00
 	// sh.bufG[sh.dotIndex] = 0x00
 	// sh.bufB[sh.dotIndex] = 0x00
@@ -128,11 +136,16 @@ func (sh *sensorHat) display() (err error) {
 		sh.bufRaw[i+j+17] = sh.bufB[i]
 	}
 
-	sh.i2cDev.Write(sh.bufRaw[:])
+	writtenData, err := sh.i2cDev.Write(sh.bufRaw[:])
+	if err != nil {
+		return err
+	} else if writtenData != 193 {
+		return err
+	}
 
-	sh.bufR[sh.dotIndex] = 0x00
-	sh.bufG[sh.dotIndex] = 0x00
-	sh.bufB[sh.dotIndex] = 0x00
+	// sh.bufR[sh.dotIndex] = 0x00
+	// sh.bufG[sh.dotIndex] = 0x00
+	// sh.bufB[sh.dotIndex] = 0x00
 
 	return nil
 }
