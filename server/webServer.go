@@ -1,3 +1,9 @@
+/* About webserver.go
+This module offers 3 main features
+- delivers the static files such as html, css, and js in the public directory
+- opens REST APIs to communicate with the client and the internal hardware
+- opens WebSocket to communicate in realtime with the client */
+
 package main
 
 import (

@@ -1,3 +1,11 @@
+/* About termSignal.go
+This module mainly offers a way to gracefully shutdown the app
+when there is a keyboard interrupt to kill the app.
+This is important because the app should do these tasks:
+- turns off the LEDs on the HAT
+- notifies the client to show if the server is shutdown
+- stores the last data to the disk (file or DB) */
+
 package main
 
 import (

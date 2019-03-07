@@ -1,16 +1,16 @@
+/* Introduction
+This project has been developed to have the minimum code snippet to run these:
+- webserver that delivers the static files for mobile browsers, some rest APIs, and websocket
+- signal waiter for the keyboard interrupt and gacefully stop the routines
+- I2C communication with the sensor hat to drive the LED matrix
+- wait group to wait for the signal and I2C routines */
+
 package main
 
 import (
 	"log"
 	"sync"
 )
-
-/* Introduction
-This project has been developed to have the minimum code snippet to run these:
-- webserver that delivers the static files for mobile browsers, some rest APIs, and websocket
-- signal waiter for the keyboard interrupt and gacefully shut the routine down
-- I2C communication with the sensor hat to driver the LED matrix
-- wait group to wait for the signal and I2C routines */
 
 // Entry point of the app
 func main() {

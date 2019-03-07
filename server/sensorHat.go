@@ -1,3 +1,6 @@
+/* About sensorHat.go
+This module has been developed to access the HAT (of course...). */
+
 package main
 
 import (
