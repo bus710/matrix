@@ -24,7 +24,7 @@ type sensorHat struct {
 	i2cDev i2c.Dev
 	i2cCon conn.Conn
 
-	// app-wide itesm
+	// app-wide items
 	wait          *sync.WaitGroup
 	chanStop      chan bool
 	chanDataReady chan bool

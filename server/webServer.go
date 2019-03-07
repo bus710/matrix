@@ -19,17 +19,19 @@ import (
 // webServer - the main struct of this module
 type webServer struct {
 	instance *http.Server
-	// Items for web interaction
-	responseItem   *Item
+
+	// web items
+	responseDummy  *Dummy
 	receivedItemWS *Message
 	responseItemWS *Message
-	// Items for local interaction
+
+	// local items
 	sensorHat *sensorHat
 }
 
-// Item - can be used for the REST API response to the clients
+// Dummy - can be used for the REST API response to the clients
 // This is not really used in this example but for future usage.
-type Item struct {
+type Dummy struct {
 	ID      string `json:"id,omitempty"`
 	Content string `json:"content,omitempty"`
 }
@@ -49,9 +51,9 @@ type Matrix struct {
 
 // init - initializes the data and structs
 func (s *webServer) init(sensorHatInstance *sensorHat) {
-	item := make([]Item, 0)
-	item = append(item, Item{ID: "1", Content: "1"})
-	item = append(item, Item{ID: "2", Content: "2"})
+	dummy := make([]Dummy, 0)
+	dummy = append(dummy, Dummy{ID: "1", Content: "1"})
+	dummy = append(dummy, Dummy{ID: "2", Content: "2"})
 
 	s.instance = &http.Server{Addr: ":8080"}
 	s.sensorHat = sensorHatInstance
@@ -107,13 +109,13 @@ func (s *webServer) PostItem(w http.ResponseWriter, r *http.Request) {
 	// To notify the data is ready to the sensorHat routine
 	s.sensorHat.chanDataReady <- true
 
-	json.NewEncoder(w).Encode(s.responseItem)
+	json.NewEncoder(w).Encode(s.responseDummy)
 }
 
 // GetItem - GET method handler
 func (s *webServer) GetItem(w http.ResponseWriter, r *http.Request) {
 	log.Println("GET is requested")
-	json.NewEncoder(w).Encode(s.responseItem)
+	json.NewEncoder(w).Encode(s.responseDummy)
 }
 
 // socket - websocket handler
