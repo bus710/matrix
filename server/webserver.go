@@ -70,12 +70,14 @@ func (s *webServer) run() {
 	log.Println(s.instance.ListenAndServe())
 }
 
-// PostItem - receives a chunk of data from the front-end
-// the data should be stored/shared to a file (eventually DB) and the SensorHat's routine
+// PostItem - POST method handler
+// receives a chunk of data from the front-end
+// the data should be stored/shared to a file (eventually DB)
+// and the SensorHat's routine
 func (s *webServer) PostItem(w http.ResponseWriter, r *http.Request) {
 	log.Println("POST is requested")
 
-	// Declaring an instance to store the incoming data
+	// To declare an instance to store the incoming data
 	matrix := Matrix{}
 
 	/* Workaroud when the incoming data's structure is not known */
@@ -96,13 +98,13 @@ func (s *webServer) PostItem(w http.ResponseWriter, r *http.Request) {
 	log.Println(matrixG64)
 	log.Println(matrixB64)
 
-	// Notifying the data is ready to the sensorHat routine
+	// To notify the data is ready to the sensorHat routine
 	s.sensorHat.chanDataReady <- true
 
 	json.NewEncoder(w).Encode(s.responseItem)
 }
 
-// GetItem -
+// GetItem - GET method handler
 func (s *webServer) GetItem(w http.ResponseWriter, r *http.Request) {
 	log.Println("GET is requested")
 	json.NewEncoder(w).Encode(s.responseItem)

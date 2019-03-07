@@ -25,7 +25,7 @@ func (sig *termSignal) init(
 	serverInstance *webServer,
 	sensorHatInstance *sensorHat) {
 
-	// Assigning instances to the pointers
+	// To assign instances to the pointers
 	sig.wait = wait
 	sig.server = serverInstance
 	sig.sensorHat = sensorHatInstance
@@ -34,19 +34,19 @@ func (sig *termSignal) init(
 // catcher - a handler to catch the interrupts from keyboard (CTRL+C)
 // and gracefully shuts down.
 func (sig *termSignal) catcher() {
-	// Storing the unbuffered channel in its struct.
+	// To store the unbuffered channel in its struct.
 	sig.sigterm = make(chan os.Signal, 1)
-	// Connecting the keyboard signal to the channel.
+	// To connect the keyboard signal to the channel.
 	signal.Notify(sig.sigterm, syscall.SIGINT, syscall.SIGTERM)
 
-	// Declaring a function that can be used running a graceful shutdown.
+	// To declare a function that can be used running a graceful shutdown.
 	cleanup := func() {
 		log.Println("Start of the cleanup")
 
-		// Sending a signal to the sensorHat's channel
+		// To send a signal to the sensorHat's channel
 		sig.sensorHat.chanStop <- true
 
-		// Calling the shutdown method of the webserver
+		// To call the shutdown method of the webserver
 		ctx, cancel := context.WithTimeout(
 			context.Background(), time.Millisecond*3000)
 		defer cancel()
@@ -54,7 +54,7 @@ func (sig *termSignal) catcher() {
 			log.Println(err)
 		}
 
-		// Decreasing the wait group
+		// To decrease the wait group
 		sig.wait.Done()
 
 		log.Println("End of the cleanup")
