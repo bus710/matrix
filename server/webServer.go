@@ -100,10 +100,10 @@ func (s *webServer) PostItem(w http.ResponseWriter, r *http.Request) {
 	matrixG64 := gjson.Get(matrix.G64, "g64").Array()
 	matrixB64 := gjson.Get(matrix.B64, "b64").Array()
 
-	log.Println(matrix.Meta)
-	log.Println(matrixR64) // try matrixR64[0].Num
-	log.Println(matrixG64)
-	log.Println(matrixB64)
+	// log.Println(matrix.Meta)
+	// log.Println(matrixR64) // try matrixR64[0].Num
+	// log.Println(matrixG64)
+	// log.Println(matrixB64)
 
 	// To copy the incoming data to the buffers of sensorHat
 	if len(matrixB64) == 64 {

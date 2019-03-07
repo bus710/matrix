@@ -5,7 +5,7 @@
 	"cwd": "${workspaceFolder}",
 	"tasks": [
 		{
-			"label": "Build and Run",
+			"label": "Build and Run for X64",
 			"command": "go build -o matrixX64 && ./matrixX64",
 			"group": {
 				"kind": "build",

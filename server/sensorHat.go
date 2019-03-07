@@ -110,7 +110,7 @@ StopFlag:
 			}
 		case <-tick:
 			// To run some task periodically
-			log.Println("test from the sensorhat routine")
+			// log.Println("test from the sensorhat routine")
 		default:
 		}
 	}
@@ -118,15 +118,18 @@ StopFlag:
 }
 
 func (sh *sensorHat) display() (err error) {
+
+	// To set a certain pixel
 	// sh.dotIndex++
 	// if sh.matrixAddr > 63 {
 	// 	sh.dotIndex = 0
 	// }
-	// sh.bufR[sh.dotIndex] = 0x00
+	// sh.bufR[sh.dotIndex] = 0x20
 	// sh.bufG[sh.dotIndex] = 0x00
 	// sh.bufB[sh.dotIndex] = 0x00
 	// sh.bufRaw[sh.dotIndex] = 0x00
 
+	// Actual mapping
 	j := int(0)
 	for i := 0; i < 64; i++ {
 		j = int(i/8) * 8
@@ -136,12 +139,16 @@ func (sh *sensorHat) display() (err error) {
 		sh.bufRaw[i+j+17] = sh.bufB[i]
 	}
 
+	// Actual writing
 	writtenData, err := sh.i2cDev.Write(sh.bufRaw[:])
 	if err != nil {
 		return err
 	} else if writtenData != 193 {
 		return err
 	}
+
+	log.Println(writtenData)
+	log.Println(sh.bufRaw)
 
 	// sh.bufR[sh.dotIndex] = 0x00
 	// sh.bufG[sh.dotIndex] = 0x00
