@@ -147,8 +147,8 @@ func (sh *sensorHat) display() (err error) {
 		return err
 	}
 
-	log.Println(writtenData)
-	log.Println(sh.bufRaw)
+	log.Println(writtenData, "bytes were written to the matrix")
+	// log.Println(sh.bufRaw)
 
 	// sh.bufR[sh.dotIndex] = 0x00
 	// sh.bufG[sh.dotIndex] = 0x00
