@@ -20,6 +20,7 @@ import (
 
 // termSignal - the main struct of this module
 type termSignal struct {
+	// app-wide items
 	wait      *sync.WaitGroup
 	server    *webServer
 	sensorHat *sensorHat

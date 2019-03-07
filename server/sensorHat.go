@@ -18,16 +18,24 @@ import (
 
 // The main struc of this module
 type sensorHat struct {
+	// app-wide items
+	wait          *sync.WaitGroup
+	chanStop      chan bool
+	chanDataReady chan bool
+
 	// local items
 	isARM  bool
 	i2cBus i2c.BusCloser
 	i2cDev i2c.Dev
 	i2cCon conn.Conn
 
-	// app-wide items
-	wait          *sync.WaitGroup
-	chanStop      chan bool
-	chanDataReady chan bool
+	// buffers for the matrix
+	matrixAddr uint16
+	dotIndex   uint8
+	bufRaw     [193]byte
+	bufR       [64]byte
+	bufG       [64]byte
+	bufB       [64]byte
 }
 
 // init - assigns data and channels
@@ -37,8 +45,9 @@ func (sh *sensorHat) init(wait *sync.WaitGroup) {
 	sh.chanDataReady = make(chan bool, 1)
 	sh.wait = wait
 
+	// To make sure the arch afterwords
 	if strings.Contains(runtime.GOARCH, "ARM") {
-		// To make sure the arch afterwords
+		// To check the archteture afterwords
 		sh.isARM = true
 
 		// To initialize the baseline drivers
@@ -47,18 +56,23 @@ func (sh *sensorHat) init(wait *sync.WaitGroup) {
 			log.Println(err)
 		}
 
-		// To open the i2c1 of RPI
+		// To open the i2c of RPI
 		bus, err := i2creg.Open("")
 		if err != nil {
 			log.Println(err)
 		}
 
-		// To initialize i2c bus
-		addr := uint16(0x0046)
+		// To initialize some numbers
+		sh.matrixAddr = uint16(0x0046) // SensorHat's AVR MCU uses 0x46 for the matrix
+		sh.dotIndex = 0
+
+		// To initialize the i2c bus
 		sh.i2cBus = bus
-		sh.i2cDev = i2c.Dev{Bus: sh.i2cBus, Addr: addr} // To avoid Vet's warning
+		sh.i2cDev = i2c.Dev{Bus: sh.i2cBus, Addr: sh.matrixAddr} // To avoid Vet's warning
 		sh.i2cCon = &sh.i2cDev
+
 	} else {
+		// If the arch is not ARM...
 		sh.isARM = false
 	}
 }
@@ -81,7 +95,10 @@ StopFlag:
 			break StopFlag
 		case <-sh.chanDataReady:
 			// When the webserver safely received a chunk of data
-			log.Println("data ready")
+			if sh.isARM {
+				log.Println("data ready")
+
+			}
 		case <-tick:
 			// To run some task periodically
 			log.Println("test from the sensorhat routine")
@@ -89,4 +106,32 @@ StopFlag:
 		}
 	}
 	sh.wait.Done()
+}
+
+func (sh *sensorHat) display() (err error) {
+	sh.dotIndex++
+	if sh.matrixAddr > 63 {
+		sh.dotIndex = 0
+	}
+	// sh.bufR[sh.dotIndex] = 0x00
+	// sh.bufG[sh.dotIndex] = 0x00
+	// sh.bufB[sh.dotIndex] = 0x00
+	// sh.bufRaw[sh.dotIndex] = 0x00
+
+	j := int(0)
+	for i := 0; i < 64; i++ {
+		j = int(i/8) * 8
+		j = j + j
+		sh.bufRaw[i+j+1] = sh.bufR[i]
+		sh.bufRaw[i+j+9] = sh.bufG[i]
+		sh.bufRaw[i+j+17] = sh.bufB[i]
+	}
+
+	sh.i2cDev.Write(sh.bufRaw[:])
+
+	sh.bufR[sh.dotIndex] = 0x00
+	sh.bufG[sh.dotIndex] = 0x00
+	sh.bufB[sh.dotIndex] = 0x00
+
+	return nil
 }

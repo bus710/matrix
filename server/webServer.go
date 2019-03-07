@@ -18,15 +18,14 @@ import (
 
 // webServer - the main struct of this module
 type webServer struct {
-	instance *http.Server
+	// app-wide items
+	sensorHat *sensorHat
 
 	// web items
+	instance       *http.Server
 	responseDummy  *Dummy
 	receivedItemWS *Message
 	responseItemWS *Message
-
-	// local items
-	sensorHat *sensorHat
 }
 
 // Dummy - can be used for the REST API response to the clients
