@@ -276,7 +276,8 @@ document.addEventListener('btnApplyPressed', function(e){
         console.log('JSON format violation!');
     }
 
-    console.log(matrixCurrentState)
+    // console.log(matrixCurrentState)
+    console.log(new Date())
 
     axios.post('/api', matrixCurrentState)
         .then(function (response) {
