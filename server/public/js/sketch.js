@@ -266,7 +266,9 @@ document.addEventListener('btnTurnRPressed', function(e){
 });
 
 document.addEventListener('btnApplyPressed', function(e){
+    matrix.flip('lr')
     let matrixCurrentState = matrix.getAllColor();
+    matrix.flip('lr')
 
     try {
         JSON.parse(JSON.stringify(matrixCurrentState));

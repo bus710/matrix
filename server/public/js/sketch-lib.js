@@ -289,6 +289,9 @@ class Matrix {
     }
 
     checkSelectedCircle(x, y) {
+        /* If this was called with args (x=0, y=0), 
+            it just deselect the circles. */
+
         let pressed = false;
         /* If there was a touch/click, 
             the mode should be changed to single 
@@ -429,7 +432,7 @@ class Matrix {
             let end = index[j][1]
 
             for (let i = start; i < end; i++) {
-                if (dir == 'right') {
+                if (dir == 'left') {
                     tmp = this.m[i][start].circle.getColor();
                     this.m[i][start].circle.setColor(
                         this.m[end][i].circle.getColor()[0],
