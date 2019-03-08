@@ -17,7 +17,7 @@ import (
 )
 
 // The main struc of this module
-type sensorHat struct {
+type senseHat struct {
 	// app-wide items
 	wait          *sync.WaitGroup
 	chanStop      chan bool
@@ -39,7 +39,7 @@ type sensorHat struct {
 }
 
 // init - assigns data and channels
-func (sh *sensorHat) init(wait *sync.WaitGroup) {
+func (sh *senseHat) init(wait *sync.WaitGroup) {
 	log.Println()
 	sh.chanStop = make(chan bool, 1)
 	sh.chanDataReady = make(chan bool, 1)
@@ -84,7 +84,7 @@ func (sh *sensorHat) init(wait *sync.WaitGroup) {
 }
 
 // run - runs the main go routine
-func (sh *sensorHat) run() {
+func (sh *senseHat) run() {
 	tick := time.Tick(1000 * time.Millisecond)
 
 	if sh.isARM {
@@ -117,7 +117,7 @@ StopFlag:
 	sh.wait.Done()
 }
 
-func (sh *sensorHat) display() (err error) {
+func (sh *senseHat) display() (err error) {
 
 	// To set a certain pixel
 	// sh.dotIndex++

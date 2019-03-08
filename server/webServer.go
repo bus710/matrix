@@ -19,7 +19,7 @@ import (
 // webServer - the main struct of this module
 type webServer struct {
 	// app-wide items
-	sensorHat *sensorHat
+	senseHat *senseHat
 
 	// web items
 	instance       *http.Server
@@ -49,13 +49,13 @@ type Matrix struct {
 }
 
 // init - initializes the data and structs
-func (s *webServer) init(sensorHatInstance *sensorHat) {
+func (s *webServer) init(senseHatInstance *senseHat) {
 	dummy := make([]Dummy, 0)
 	dummy = append(dummy, Dummy{ID: "1", Content: "1"})
 	dummy = append(dummy, Dummy{ID: "2", Content: "2"})
 
 	s.instance = &http.Server{Addr: ":8080"}
-	s.sensorHat = sensorHatInstance
+	s.senseHat = senseHatInstance
 }
 
 // run - delivers the static web files and serves the REST API (+ websocket)
@@ -80,7 +80,7 @@ func (s *webServer) run() {
 // PostItem - POST method handler
 // receives a chunk of data from the front-end
 // the data should be stored/shared to a file (eventually DB)
-// and the SensorHat's routine
+// and the SenseHat's routine
 func (s *webServer) PostItem(w http.ResponseWriter, r *http.Request) {
 	log.Println("POST is requested")
 
@@ -108,14 +108,14 @@ func (s *webServer) PostItem(w http.ResponseWriter, r *http.Request) {
 	// To copy the incoming data to the buffers of sensorHat
 	if len(matrixB64) == 64 {
 		for i := range matrixR64 {
-			s.sensorHat.bufR[i] = byte(matrixR64[i].Num)
-			s.sensorHat.bufG[i] = byte(matrixG64[i].Num)
-			s.sensorHat.bufB[i] = byte(matrixB64[i].Num)
+			s.senseHat.bufR[i] = byte(matrixR64[i].Num)
+			s.senseHat.bufG[i] = byte(matrixG64[i].Num)
+			s.senseHat.bufB[i] = byte(matrixB64[i].Num)
 		}
 	}
 
 	// To notify the data is ready to the sensorHat routine
-	s.sensorHat.chanDataReady <- true
+	s.senseHat.chanDataReady <- true
 
 	json.NewEncoder(w).Encode(s.responseDummy)
 }

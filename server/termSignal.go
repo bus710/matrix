@@ -21,10 +21,10 @@ import (
 // termSignal - the main struct of this module
 type termSignal struct {
 	// app-wide items
-	wait      *sync.WaitGroup
-	server    *webServer
-	sensorHat *sensorHat
-	sigterm   chan os.Signal
+	wait     *sync.WaitGroup
+	server   *webServer
+	senseHat *senseHat
+	sigterm  chan os.Signal
 }
 
 // init - takes a WG, instance of service, and channels of go routines
@@ -32,12 +32,12 @@ type termSignal struct {
 func (sig *termSignal) init(
 	wait *sync.WaitGroup,
 	serverInstance *webServer,
-	sensorHatInstance *sensorHat) {
+	senseHatInstance *senseHat) {
 
 	// To assign instances to the pointers
 	sig.wait = wait
 	sig.server = serverInstance
-	sig.sensorHat = sensorHatInstance
+	sig.senseHat = senseHatInstance
 }
 
 // catcher - a handler to catch the interrupts from keyboard (CTRL+C)
@@ -53,7 +53,7 @@ func (sig *termSignal) catcher() {
 		log.Println("Start of the cleanup")
 
 		// To send a signal to the sensorHat's channel
-		sig.sensorHat.chanStop <- true
+		sig.senseHat.chanStop <- true
 
 		// To call the shutdown method of the webserver
 		ctx, cancel := context.WithTimeout(

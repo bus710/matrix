@@ -18,20 +18,20 @@ func main() {
 
 	// To declare each struct and getting the pointers
 	waitInstance := sync.WaitGroup{}
-	sensorHatInstance := sensorHat{}
+	senseHatInstance := senseHat{}
 	serverInstance := webServer{}
 	signalInstance := termSignal{}
 
 	// To initialize each module
-	sensorHatInstance.init(&waitInstance)
-	serverInstance.init(&sensorHatInstance)
-	signalInstance.init(&waitInstance, &serverInstance, &sensorHatInstance)
+	senseHatInstance.init(&waitInstance)
+	serverInstance.init(&senseHatInstance)
+	signalInstance.init(&waitInstance, &serverInstance, &senseHatInstance)
 
 	// To increase the wait group and starting each go routine
 	waitInstance.Add(1)
 	go signalInstance.catcher()
 	waitInstance.Add(1)
-	go sensorHatInstance.run()
+	go senseHatInstance.run()
 
 	// To run the webserver
 	serverInstance.run()
