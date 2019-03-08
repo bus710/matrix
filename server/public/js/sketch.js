@@ -55,10 +55,10 @@ function setup() {
     createCanvas(displayWidth, displayWidth*1.6)
 
     /* ============================== */
-    yMatrix = 30;
+    yMatrix = 35;
 
     matrix = new Matrix();
-    matrix.setPosition(80, yMatrix);
+    matrix.setPosition(85, yMatrix);
     matrix.setMode('All')
 
     /* ============================== */
