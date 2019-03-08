@@ -36,5 +36,8 @@ func main() {
 	// To run the webserver
 	serverInstance.run()
 
+	// To wait all the go routines finish their tasks.
+	waitInstance.Wait()
+
 	log.Println("See you again")
 }
