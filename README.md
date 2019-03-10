@@ -1,36 +1,54 @@
 # matrix
 
-A toy project to drive Sense Hat's matrix by using Go (http, gorilla, and Periph) and P5.js
+## Writer
 
-## A note from the embd repo.
+- SJ Kim - <bus710@gmail.com>
 
-### Build the binary for linux/ARM:
+## Description
 
+A toy project to drive Sense Hat's matrix by using Go (http, gorilla, and Periph) and P5.js.
+
+This project consists of 2 parts:
+- A simple mobile front-end based on P5 that can give a simple web GUI to control 64 LEDs on Sense Hat.
+- Golang based web server with REST APIs that accepts the configuration from the front-end and control the LEDs via I2C.
+
+An image can make more sense than the description.
+
+<img src="assetsForReadMe/01.png" width="300">
+
+The simple mobile web front-end has 64 dots that represent the 64 LEDs on Sense Hat. Users can chose which LEDs they want to change with the 3 buttons such as All, Partial, and Single. The colors can be changed by the 3 sliders as well as the buttons below that can flip and turn the matrix. Lastly, there is an Apply button that sends the data to the RPI server.
+
+Here is a link to Youtube that shows the actual behavior.  
+[https://youtu.be/xrmaou6DVRc](https://youtu.be/xrmaou6DVRc)
+
+The readers can try this project with their RPI and Sense Hat.
+
+**Disclaimer**
 ```
-$ export GOOS=linux
-$ export GOARCH=arm
-$ go build simpleblinker.go
+This is just a toy project that cannot be used for safety/commercial products. The developer doesn't take any kind of (phsical, mental, and financial) responsibility. 
 ```
 
-### Copy the cross-compiled binary to your RaspberryPi:
+## Materials
 
-```
-$ scp simpleblinker pi@192.168.2.2:~
-```
+### Hardware
 
-### Then on the RPI, run the program with sudo:
+To properly reproduce this project, readers should have these hardwares:
+- A PC that has software to build this project
+- A Raspberry Pi with a micro SD card that has more than 8 GB to store Raspbian stretch
+- A Sense Hat
+- Cables for power, network, and serial terminal
 
-```
-$ sudo ./simpleblinker
-```
+### Software
 
-### How to generate ssh key and save it to rpi?
+The PC should have these tools:
+- Go SDK (1.12 is the latest official version as of March 2019)
+- VSCODE (+ Go and SFTP extensions)
+- Web Browser (Chrome/Chromium)
+- SSH/SFTP client
+- Git client
+- Should be connected to your router
 
-```
-// will be asked about the file name (test in this case)
-$ ssh-keygen -t rsa -b 2048 -v
-// copying the pub key to the host
-$ ssh-copy-id -i .ssh/test pi@192.168.0.6 -p 2222
-// testing
-$ ssh -p 2222 pi@192.168.0.6
-```
+The RPI should have these tools:
+- OpenSSH server that has port opened as you want (not 22 though...)
+- Should be connected to your router (note the IP address)
+
