@@ -1,4 +1,5 @@
 
+/* This makes the DOM button */
 class Button {
     /* This function generates the test button. */
     constructor(name) {
@@ -11,10 +12,6 @@ class Button {
         this.button.mousePressed(() => this.buttonReaction());
         this.button.mouseReleased(() => this.buttonReaction());
         this.event;
-    }
-
-    addSocket(socket) {
-        this.socket = socket;
     }
 
     /* This is a handler for the button. */
@@ -54,6 +51,7 @@ class Button {
     }
 }
 
+/* This makes the DOM p */
 class P {
     constructor(name) {
         this.name = name;
@@ -90,6 +88,7 @@ class P {
     }
 }
 
+/* This makes the DOM slider */
 class Slider {
     constructor(name) {
         this.name = name;
@@ -133,6 +132,7 @@ class Slider {
     }
 }
 
+/* This makes the P5 circle */
 class Circle {
     constructor() {
         this.x = 0;
@@ -175,12 +175,15 @@ class Circle {
         return this.selected;
     }
 
+    /* To keep if this circle is chosen */
     setSelected(value) {
         this.selected = value;
     }
 
     update() {
         delete this.e;
+
+        /* If this circle is chosen, make the outline thicker */
         if (this.selected) {
             strokeWeight(3);
             stroke('white')
@@ -194,6 +197,7 @@ class Circle {
     }
 }
 
+/* This makes a matrix that has 64 circles */
 class Matrix {
     constructor(name) {
         this.m = new Array(8);
@@ -220,6 +224,7 @@ class Matrix {
         this.y = y;
     }
 
+    /* To store the mode */
     setMode(m) {
         if ((m != 'All') &&
             (m != 'Partial') &&
@@ -261,6 +266,7 @@ class Matrix {
         this.b = b;
     }
 
+    /* This returns a stringified JSON for the RGB matrix */
     getAllColor() {
         let allColor = {
             meta: 'matrixCurrentState',
@@ -288,6 +294,7 @@ class Matrix {
         return allColor;
     }
 
+    /* This updates the circles' outline. */
     checkSelectedCircle(x, y) {
         /* If this was called with args (x=0, y=0), 
             it just deselect the circles. */
@@ -353,6 +360,8 @@ class Matrix {
         }
     }
 
+    /* This flips the matrix by using the simple linear algebra equation 
+    with anti-diagonal multiplier */
     flip(dir) {
         if ((dir != 'lr') &&
             (dir != 'ud')) {
@@ -411,6 +420,8 @@ class Matrix {
         }
     }
 
+    /* This turns the matrix by swapping each circles color 
+    with a temporal variable at a moment. */
     rot90(dir) {
         if ((dir != 'left') &&
             (dir != 'right')) {
