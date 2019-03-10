@@ -6,7 +6,7 @@
 const serverIP = location.hostname
 const webSocket = new WebSocket("ws://" + serverIP + ":8080/message");
 
-/* Location delimiter */
+/* Location delimiter for the GUI components */
 let yMatrix;
 let yType;
 let yR, yG, yB;
@@ -14,7 +14,7 @@ let yTurn;
 let yApply;
 let yFlip;
 
-/* GUI components */
+/* These variables will be used for GUI components */
 let matrix;
 let btnAll;
 let btnPartial;
@@ -51,17 +51,19 @@ let drawCnt = 0;
     - windowResized */
 
 function setup() {
-    // createCanvas(displayWidth, displayHeight)
+    /* To make a P5 canvas that fits the entire screen
+    that has 16:9 screen ratio */
     createCanvas(displayWidth, displayWidth*1.6)
 
-    /* ============================== */
+    /* This block makes a matrix that consists of 
+    64 circles. */
     yMatrix = 35;
-
     matrix = new Matrix();
     matrix.setPosition(85, yMatrix);
     matrix.setMode('All')
 
-    /* ============================== */
+    /* This block makes the 3 buttons - All, Partial, and Single.
+    These button can be used to pick the target circles */
     yType = 320;
     btnAll = new Button('All');
     btnAll.setPosition(50, yType);
@@ -78,7 +80,8 @@ function setup() {
     btnSingle.setSize(100, 40);
     btnSingle.setEvent(eBtnSingle);
 
-    /* ============================== */
+    /* These 3 blocks below make the 3 sliders - R, G, and B. 
+    Each slider changes the color of the selected circles at a moment. */
     yR = 360;
     txtR = new P("R:");
     txtR.setPosition(60, yR);
@@ -123,7 +126,7 @@ function setup() {
     sliderB.setPosition(215, yB+15);
     sliderB.setEvent(eSliderB);
 
-    /* ============================== */
+    /* Flip X and Y buttons can be used to flip the matrix. */
     yFlip = 490;
     btnFlipX = new Button('Flip X');
     btnFlipX.setPosition(50, yFlip);
@@ -133,7 +136,7 @@ function setup() {
     btnFlipY.setPosition(210, yFlip);
     btnFlipY.setEvent(eBtnFlipY);
 
-    /* ============================== */
+    /* Turn L and R buttons can be used to turn the matrix. */
     yTurn = 540;
     btnTurnL = new Button('Turn Left');
     btnTurnL.setPosition(50, yTurn);
@@ -143,28 +146,36 @@ function setup() {
     btnTurnR.setPosition(210, yTurn);
     btnTurnR.setEvent(eBtnTurnR);
 
-    /* ============================== */
+    /* Apply button can be used to send the current matrix' state
+    to the server (of the REST API endpoint). */
     yApply = 590;
     btnApply = new Button('Apply');
     btnApply.setPosition(50, yApply);
     btnApply.setSize(310, 40);
     btnApply.setEvent(eBtnApply);
 
-    /* The eye of dragon ============ */
+    /* To apply the sliders' state to all the circles. */
     slidersUpdated();
 }
 
+/* This function can be (typically) called 60 times per second */
 function draw() {
+    /* drawCnt limits the number of drawing in a second for the efficiency */
     drawCnt += 1;
     if (drawCnt > 10) {
         drawCnt = 0;
         background('#dddddd')
 
+        // To update the matrix frequently 
         matrix.update();
 
+        // To reset the font-weight of each button
         btnAll.setNormal();
         btnPartial.setNormal();
         btnSingle.setNormal();
+
+        /* Then set the font-weight again 
+        so that this can prevent any glitch */
         switch (matrix.getMode()) {
             case 'All':
                 btnAll.setBold();
@@ -182,6 +193,8 @@ function draw() {
     }
 }
 
+/* This function checks where a click/touch happened
+so that the app can know which circle was chosen. */
 function mouseClicked () {
     if (mouseY < yType) {
         btnAll.setNormal();
@@ -194,15 +207,22 @@ function mouseClicked () {
             btnSingle.setBold();
         }
 
+        /* Chosen circles have thicker stroke line.
+        Depends on the context (all, partial, or single),
+        this function checks which was chosen. */
         matrix.checkSelectedCircle(mouseX, mouseY)
     }
 }
 
+/* To fix the size of the canvas 
+even if the window size is changed. */
 function windowResized() {
-    createCanvas(displayWidth, displayHeight)
+    createCanvas(displayWidth, displayWidth*1.6)
 }
 
 /* Event Handlers =========================== */
+
+/* This handler resets all the circles' color to be white and chosen */
 document.addEventListener('btnAllPressed', function(e){
     sliderR.setValue(250);
     sliderG.setValue(250);
@@ -215,6 +235,9 @@ document.addEventListener('btnAllPressed', function(e){
     btnSingle.setNormal();
 });
 
+/* This handler sets the mode to be partial. 
+This makes all the circles to be unchosen first 
+so that users can start to chose. */
 document.addEventListener('btnPartialPressed', function(e){
     matrix.setMode('Partial');
     btnAll.setNormal();
@@ -222,6 +245,9 @@ document.addEventListener('btnPartialPressed', function(e){
     btnSingle.setNormal();
 });
 
+/* This handler sets the mode to be single. 
+This makes all the circles to be unchosen first 
+so that users can start to chose. */
 document.addEventListener('btnSinglePressed', function(e){
     matrix.setMode('Single');
     btnAll.setNormal();
@@ -229,6 +255,7 @@ document.addEventListener('btnSinglePressed', function(e){
     btnSingle.setBold();
 });
 
+/* This handler fires the flipping up-down function. */
 document.addEventListener('btnFlipXPressed', function(e){
     matrix.flip('ud');
     matrix.setMode('None');
@@ -238,6 +265,7 @@ document.addEventListener('btnFlipXPressed', function(e){
     matrix.checkSelectedCircle(0, 0)
 });
 
+/* This handler fires the flipping left-right function. */
 document.addEventListener('btnFlipYPressed', function(e){
     matrix.flip('lr');
     matrix.setMode('None');
@@ -247,6 +275,7 @@ document.addEventListener('btnFlipYPressed', function(e){
     matrix.checkSelectedCircle(0, 0)
 });
 
+/* This handler fires the left turning function. */
 document.addEventListener('btnTurnLPressed', function(e){
     matrix.rot90('left');
     matrix.setMode('None');
@@ -256,6 +285,7 @@ document.addEventListener('btnTurnLPressed', function(e){
     matrix.checkSelectedCircle(0, 0)
 });
 
+/* This handler fires the right turning function. */
 document.addEventListener('btnTurnRPressed', function(e){
     matrix.rot90('right');
     matrix.setMode('None');
@@ -265,11 +295,19 @@ document.addEventListener('btnTurnRPressed', function(e){
     matrix.checkSelectedCircle(0, 0)
 });
 
+/* This handler:
+- gets the matrix's status
+- makes the arrays for RGB as stringifued json 
+- sends the strings to the REST end point. */
 document.addEventListener('btnApplyPressed', function(e){
+    /* The matrix should be flipped once before get it.
+    to match the array's order and the LED's order. 
+    However, it should be flipped again for the GUI's order. */
     matrix.flip('lr')
     let matrixCurrentState = matrix.getAllColor();
     matrix.flip('lr')
 
+    /* Check if the arrays returned have right JSON structure. */
     try {
         JSON.parse(JSON.stringify(matrixCurrentState));
     } catch (e) {
@@ -279,6 +317,7 @@ document.addEventListener('btnApplyPressed', function(e){
     // console.log(matrixCurrentState)
     console.log(new Date())
 
+    /* To send the arrays to the server */
     axios.post('/api', matrixCurrentState)
         .then(function (response) {
             console.log(`POST's result: ${response.statusText}`);  // template literal
@@ -287,26 +326,33 @@ document.addEventListener('btnApplyPressed', function(e){
             console.log(`POST's result: ${error}`);
     });
 
-    /* Just in case WebSocket connection is needed. */
+    /* Just in case WebSocket connection is needed.
+    For example, if someone wants to develop their own application 
+    for the motion sensor on Sense Hat. */
     console.log("sent a WS message");
     webSocket.send(
         JSON.stringify({message: "hello server!"}))
-
 });
 
+/* A handler for the R slider */
 document.addEventListener('sliderRChanged', function(e){
     slidersUpdated();
 });
 
+/* A handler for the G slider */
 document.addEventListener('sliderGChanged', function(e){
     slidersUpdated();
 });
 
+/* A handler for the B slider */
 document.addEventListener('sliderBChanged', function(e){
     slidersUpdated();
 });
 
 /* Helper functions =================== */
+
+/* This function gets the sliders' status 
+and applies the value to the circles chosen at a moment (+label). */
 function slidersUpdated() {
     valR.update(sliderR.getValue());
     valG.update(sliderG.getValue());
@@ -317,11 +363,14 @@ function slidersUpdated() {
         sliderB.getValue());
 }
 
-/* Network Handlers =================== */
+/* Web Socket Handlers =================== */
+
+/* To check if the socket is opened properly */
 webSocket.onopen = function () {
     console.log('socket is opened');
 };
 
+/* A handler for the web socket. */
 webSocket.onmessage = function (e) {
     console.log('got a WS message: ' + JSON.parse(e.data).message);
 };

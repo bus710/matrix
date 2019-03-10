@@ -1,6 +1,6 @@
 # matrix
 
-A toy project to drive the sense-hat's matrx using Go(http, gorilla, and Periph) and P5.js
+A toy project to drive Sense Hat's matrix by using Go (http, gorilla, and Periph) and P5.js
 
 ## A note from the embd repo.
 
@@ -12,13 +12,13 @@ $ export GOARCH=arm
 $ go build simpleblinker.go
 ```
 
-### Copy the cross-compiled binary to your RaspberryPi*:
+### Copy the cross-compiled binary to your RaspberryPi:
 
 ```
 $ scp simpleblinker pi@192.168.2.2:~
 ```
 
-### Then on the rPi run the program with sudo*:
+### Then on the RPI, run the program with sudo:
 
 ```
 $ sudo ./simpleblinker
