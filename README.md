@@ -16,7 +16,10 @@ An image can make more sense than the description above.
 
 <img src="assetsForReadMe/01.png" width="300">
 
-The simple mobile web front-end has 64 dots that represent the 64 LEDs on Sense Hat. Users can chose which LEDs they want to control for the color with the 3 buttons such as All, Partial, and Single. The colors can be changed by the 3 sliders as well as the buttons below that can flip and turn the matrix. Lastly, there is an Apply button that sends the data to the RPI server (then the Go server control Sense Hat via I2C).
+- The simple mobile web front-end has 64 dots that represent the 64 LEDs on Sense Hat. 
+- Users can chose which LEDs they want to control for the color with the 3 buttons such as All, Partial, and Single. 
+- The colors can be changed by the 3 sliders as well as the buttons below that can flip and turn the matrix. 
+- Lastly, there is an Apply button that sends the data to the RPI server (then the Go server control Sense Hat via I2C).
 
 Here is a link to Youtube that shows its actual behavior.  
 [https://youtu.be/xrmaou6DVRc](https://youtu.be/xrmaou6DVRc)
@@ -25,7 +28,8 @@ The readers can try this project with their RPI and Sense Hat.
 
 **Disclaimer**
 ```
-This is just a toy project that cannot be used for safety/commercial products. The developer doesn't take any kind of (phsical, mental, and financial) responsibility. 
+This is just a toy project that cannot be used for safety/commercial products.   
+The developer doesn't take any kind of (phsical, mental, and financial) responsibility. 
 ```
 
 ## Materials
