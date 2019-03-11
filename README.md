@@ -133,8 +133,8 @@ chmod 744 matrixARM
 
 #### 8. Access RPI from Web brower of the host
 
-From Web browser, type http://RPI-ADDRESS:8080.  
-(Note that the RPI-ADDRESS should be chaged as your case).
+From Web browser, access to http://192.168.1.76:8080.  
+(Pleae note that the address should be changed as your case).
 
 #### 9. Play with the app!
   
