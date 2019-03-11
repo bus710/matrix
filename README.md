@@ -28,7 +28,8 @@ Here is a link to Youtube that shows its actual behavior.
 
 The readers can try this project with their RPI and Sense Hat.
 
-**Disclaimer**
+**Disclaimer**  
+  
 ```
 This is just a toy project that cannot be used for safety/commercial products.   
 The developer doesn't take any kind of (phsical, mental, and financial) responsibility. 
@@ -56,32 +57,35 @@ The PC should have these tools:
 
 The RPI should have these tools:
 - OpenSSH server that has port opened as you want (not 22 though...)
-- Should be connected to your router (note the IP address)
+- Should be connected to your router (Please note the IP address)
 
 ### Steps to follow
 
 #### 1. clone this repo  
   
-First, clone this repo to your PC.  
-Typically you can use the git command in Linux/Mac.
+First, clone this repo to the host.  
+Typically you can use the git command in Linux/Mac.  
+  
 ```
 git clone https://github.com/bus710/matrix
-```
+``` 
+  
 #### 2. open the clone project  
   
-Open this repo with VSCODE.
+Open this repo with VSCODE.  
+  
 ```
 code $PROJECT-ROOT/server
 ```
 
 #### 3. build the Go server for ARM processor
 
-Assumingly the host has Go SDK and ready to build this repo.
-If so, press CTRL+SHIFT+B then VSCODE will show you a dialog to build for x64 or ARM (pick matrixARM).
+Assumingly the host has Go SDK and ready to build this repo.  
+If so, press CTRL+SHIFT+B then VSCODE will show you a dialog to build for x64 or ARM (Please pick matrixARM).
 
+#### 4. Config SFTP extensio  
+  
 To push the matrixARM binary and the web contents files, a file (server/.vscode/.sftp.json) should be changed to point the RPI's IP address.
-
-#### 4. Config SFTP extensio
 
 ```
 {
@@ -97,12 +101,14 @@ To push the matrixARM binary and the web contents files, a file (server/.vscode/
     "interactiveAuth": false,
     "syncMode": "update"
 }
-```
+```  
+  
 The host and port should be updated regarding the RPI.
 
-#### 5. Generate the SSH key and push it to RPI
+#### 5. Generate a SSH key and push it to RPI
 
-The host and RPI should share ssh key to use the SFTP extension.
+The host and RPI should share ssh key to use the SFTP extension.  
+  
 ```
 ssh-keygen -t rsa -b 2048 -v
 ssh-copy-id -i .ssh/test pi@192.168.1.76 -p 2222
@@ -118,7 +124,8 @@ Repeat the same action for the public directory.
 
 #### 7. Run the Go server from RPI
 
-From RPI's terminal, run below commands:
+From RPI's terminal, run below commands:  
+  
 ```
 chmod 744 matrixARM
 ./matrixARM
@@ -131,5 +138,5 @@ From Web browser, type http://RPI-ADDRESS:8080.
 
 #### 9. Play with the app!
   
-If you see the same screen as the image example in the beginning, you are ready to play with that, enjoy!
+If you see a screen from your browser as same as the image example in the beginning, you are ready to play with that, enjoy!
 
