@@ -2,6 +2,8 @@
   
 A toy project to drive Sense Hat's matrix by using Go/JS.
 
+<img src="assetsForReadMe/99.png" width="300">
+
 ## Writer
 
 - SJ Kim - <bus710@gmail.com>
@@ -129,6 +131,5 @@ From Web browser, type http://RPI-ADDRESS:8080.
 
 #### 9. Play with the app!
   
-If you see the same screen as the example in the beginning, you are ready to play with that, enjoy!
+If you see the same screen as the image example in the beginning, you are ready to play with that, enjoy!
 
-<img src="assetsForReadMe/99.png" width="300">
