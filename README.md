@@ -81,9 +81,9 @@ code $PROJECT-ROOT/server
 #### 3. build the Go server for ARM processor
 
 Assumingly the host has Go SDK and ready to build this repo.  
-If so, press CTRL+SHIFT+B then VSCODE will show you a dialog to build for x64 or ARM (Please pick matrixARM).
+If so, press **CTRL + SHIFT + B** then VSCODE will show you a dialog to build for x64 or ARM (Please pick matrixARM).
 
-#### 4. Config SFTP extensio  
+#### 4. Config SFTP extension  
   
 To push the matrixARM binary and the web contents files, a file (server/.vscode/.sftp.json) should be changed to point the RPI's IP address.
 
@@ -107,7 +107,7 @@ The host and port should be updated regarding the RPI.
 
 #### 5. Generate a SSH key and push it to RPI
 
-The host and RPI should share ssh key to use the SFTP extension.  
+The host and RPI should share a SSH key to use the SFTP extension.  
   
 ```
 ssh-keygen -t rsa -b 2048 -v
@@ -119,8 +119,9 @@ If the key was well copied into RPI, the last command makes your terminal to log
 
 #### 6. Push the binary and web contents to RPI
 
-From VSCODE, righ-click the matrixARM generated and click **Upload**.  
-Repeat the same action for the public directory.
+From VSCODE, 
+- righ-click the matrixARM generated from the file explorer and click **Upload**.  
+- Repeat the same action for the public directory.
 
 #### 7. Run the Go server from RPI
 
