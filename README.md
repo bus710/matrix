@@ -8,7 +8,7 @@ A toy project to drive Sense Hat's LED matrix by using Go/JS.
 
 This project consists of 2 parts:
 - A simple mobile front-end based on P5 that can modify the matrix data for 64 LEDs on Sense Hat.
-- Golang based web server with REST APIs that accepts the configuration from the front-end and control the LEDs via I2C.
+- Golang based web server with REST APIs that accepts the configuration from the front-end and controls the LEDs via I2C.
 
 An image can make more sense than the description above.
 
