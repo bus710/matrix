@@ -1,6 +1,6 @@
 # matrix
   
-A toy project to drive Sense Hat's matrix by using Go/JS.
+A toy project to drive Sense Hat's LED matrix by using Go/JS.
 
 <img src="assetsForReadMe/99.png" width="300">
 
