@@ -12,7 +12,7 @@ This project consists of 2 parts:
 
 An image can make more sense than the description above.
 
-<img src="assetsForReadMe/01.png" width="300">
+<img src="assetsForReadMe/02.gif" width="300">
 
 - The simple mobile web front-end has 64 dots that represent the 64 LEDs on Sense Hat. 
 - Users can choose which LEDs they want to control for the color with the 3 buttons such as All, Partial, and Single. 
