@@ -72,9 +72,9 @@ code $PROJECT-ROOT/server
 Assumingly the host has Go SDK and ready to build this repo.  
 If so, press **CTRL + SHIFT + B**, then VSCODE will show you a dialog to build for x64 or ARM (Please pick matrixARM).
 
-#### 4. Config SFTP extension  
+#### 4. Config SFTP extension (liximomo)  
   
-To push the matrixARM binary and the web contents files, a file (server/.vscode/.sftp.json) should be changed to point the RPI's IP address.
+To push the matrixARM binary and the web contents files, a file (server/.vscode/sftp.json) should be generated (CTRL+SHIFT+P) and changed to point the RPI's IP address.
 
 ```
 {
