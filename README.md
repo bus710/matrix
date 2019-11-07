@@ -84,7 +84,7 @@ To push the matrixARM binary and the web contents files, a file (server/.vscode/
     "port": 2222,
     "username": "pi",
     "remotePath": "/home/pi/",
-    "uploadOnSave": true,
+    "uploadOnSave": false,
     "privateKeyPath": "~/.ssh/test",
     "passive": false,
     "interactiveAuth": false,
