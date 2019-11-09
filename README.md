@@ -100,7 +100,7 @@ The host and RPI should share a SSH key to use the SFTP extension.
   
 ```
 ssh-keygen -t rsa -b 2048 -v
-ssh-copy-id -i .ssh/test pi@192.168.1.76 -p 2222
+ssh-copy-id -i .ssh/test.pub pi@192.168.1.76 -p 2222
 ssh -p 2222 pi@192.168.1.76
 ```
 
