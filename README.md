@@ -130,12 +130,6 @@ From Web browser, access to http://192.168.1.76:8080.
   
 If you see a screen from your browser as same as the image example in the beginning, you are ready to play with that, enjoy!
 
-  
-## Writer
-
-- SJ Kim - <bus710@gmail.com>
-
-
 ----
 **Disclaimer**  
   
